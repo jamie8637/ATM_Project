@@ -1,0 +1,41 @@
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+
+public class ResultsPanel extends JPanel {
+	
+	private JLabel lblTitle, lblTotalFunds;
+	private Color color = Color.BLACK;
+	
+	public ResultsPanel() {
+		
+		/**
+		 * Initial Layout Prior to User Interaction
+		 */
+		
+		// Set Border for Results Panel
+		setBorder(BorderFactory.createLineBorder(color));
+		// Set Absolute Layout Positioning
+		setLayout(null);
+		
+		
+		
+		lblTitle = new JLabel("Welcome to the ATM!");
+		lblTotalFunds = new JLabel("Total Funds: $");
+		
+		// Add Title
+		add(lblTitle);
+		lblTitle.setLocation(150, 5);
+		lblTitle.setSize(150, 50);
+		
+		// Add Total Funds - Initially False
+		add(lblTotalFunds);
+		lblTotalFunds.setVisible(false);
+		lblTotalFunds.setLocation(20, 50);
+		lblTotalFunds.setSize(100, 20);
+		
+	}
+}

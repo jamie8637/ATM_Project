@@ -1,0 +1,223 @@
+package data;
+
+
+/**
+ * DataUtils.java Performs all higher level connectivity, query, and statement related functions.
+ * 
+ * @author Database Layer Team
+ * @date 9/9/2013
+ */
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class DataUtils {
+	//static Connection connection = null;
+	//static Statement stmt = null;
+	//static ResultSet result = null;
+
+	public DataUtils() {
+
+	}
+
+	public static void main(String[] args) throws Exception {
+		connect();
+		System.out.println("ok");
+	}
+
+	/**
+	 * connect attempts to connect to the database
+	 * 
+	 * @throws Exception
+	 * @author Dave Lawnicki
+	 */
+	public static Connection connect() throws Exception {
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection connection = DriverManager.getConnection(
+				"jdbc:mysql://mysql.brokerlogic.com:3306/atmdb", "sd2", "fpcEbQ*XunF#h6BW$$b4");
+
+		// Since this is a banking app, we will want to make sure that we only
+		// commit when we know every
+		// statement has been processed.
+		connection.setAutoCommit(false);
+		//stmt = connection.createStatement();
+		
+		return connection;
+	}
+
+	/**
+	 * commit attempts to commit the transaction
+	 * 
+	 * @throws Exception
+	 * @author Dave Lawnicki
+	 */
+	public static void commit(Connection connection) throws Exception {
+		if (connection != null)
+			connection.commit();
+	}
+
+	/**
+	 * rollback attempts to rollback the transaction
+	 * 
+	 * @throws Exception
+	 * @author Dave Lawnicki
+	 */
+	public static void rollback(Connection connection) throws Exception {
+		if (connection != null)
+			connection.rollback();
+	}
+
+	/**
+	 * disconnect attempts to close all objects
+	 * 
+	 * @throws Exception
+	 * @author Dave Lawnicki
+	 */
+	public void disconnect(Connection connection) throws SQLException {
+		//if (result != null)
+		//	result.close();
+		//if (stmt != null)
+		//	stmt.close();
+		if (connection != null)
+			connection.close();
+	}
+
+	/**
+	 * selectData attempts to retrieve the sql statement passed to it from
+	 * another function in this class.
+	 * 
+	 * @return List<Map<String, Object>> This is the "table" of data retrieved
+	 *         from the statement.
+	 * @param sqlText
+	 *            The sql statement to query.
+	 * @throws SQLException
+	 * @throws Exception
+	 * @author Dave Lawnicki
+	 */
+	public static List<Map<String, Object>> selectData(String sqlText, Connection connection)
+			throws SQLException, SQLException {
+		List<Map<String, Object>> oTable = new ArrayList<Map<String, Object>>();
+
+		if (connection == null || connection.isClosed()) {
+			try {
+				connect();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Statement stmt = connection.createStatement();
+
+		ResultSet oResult = null;
+
+		oResult = stmt.executeQuery(sqlText);
+
+		if (oResult != null) {
+			while (oResult.next()) {
+				Map<String, Object> oRow = new LinkedHashMap<String, Object>();
+
+				ResultSetMetaData oMeta = oResult.getMetaData();
+
+				for (int i = 1; i <= oMeta.getColumnCount(); i++) {
+					oRow.put(oMeta.getColumnName(i), oResult.getObject(i));
+				}
+
+				oTable.add(oRow);
+			}
+		}
+
+		return oTable;
+	}
+
+	/**
+	 * processStatement. Will create connection if one does not exist.
+	 * 
+	 * @param sqlText
+	 *            SQL statement to execute
+	 * @param autoCommit
+	 *            Should it automatically commit the data
+	 * @return integer number of rows affected
+	 * @throws SQLException
+	 * @throws Exception
+	 * @author Dave Lawnicki
+	 */
+	public static int processStatement(String sqlText, Connection connection, Boolean autoCommit)
+			throws SQLException, Exception {
+		if (connection == null || connection.isClosed()) {
+			connect();
+		}
+
+		Statement stmt = connection.createStatement();
+
+		int iResult = stmt.executeUpdate(sqlText);
+
+		if (autoCommit)
+			connection.commit();
+
+		return iResult;
+	}
+
+	/**
+	 * processStatementGetId Will create connection if one does not exist.
+	 * 
+	 * 
+	 * @param sqlText
+	 *            SQL statement to execute
+	 * @param autoCommit
+	 *            Should it automatically commit the data
+	 * @return integer of last inserted ID
+	 * @throws SQLException
+	 * @throws Exception
+	 * @author Dave Lawnicki
+	 */
+	public static int processStatementGetId(String sqlText, Connection connection, Boolean autoCommit)
+			throws SQLException, Exception {
+		if (connection == null || connection.isClosed()) {
+			connect();
+		}
+
+		Statement stmt = connection.createStatement();
+
+		int iResult = stmt.executeUpdate(sqlText, Statement.RETURN_GENERATED_KEYS);
+
+		if (autoCommit)
+			connection.commit();
+
+		return iResult;
+	}
+	
+	/**
+	 * @param queryString
+	 * @return true or false depending on the row found
+	 * @throws SQLException
+	 * @throws Exception
+	 * @author Vandana Arora
+	 * @date 9/18/2013
+	 */
+	public static boolean runQuery(String queryString, Connection connection) throws SQLException,
+			Exception {
+
+		if (connection == null || connection.isClosed()) {
+			connect();
+		}
+
+		Statement stmt = connection.createStatement();
+
+		ResultSet rs = null;
+		rs = stmt.executeQuery(queryString);
+
+		if (rs.next())
+			return true;
+		else
+			return false;
+
+	}
+}

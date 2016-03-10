@@ -1,0 +1,19 @@
+AccountRepository.java
+
+    bool createAccount(Account) 
+    bool updateAccount(Account)
+    Account getAccount(int accountId) 
+
+
+CustomerRepository.java
+
+    bool createCustomer(Customer customer)
+    bool updateCustomer(Customer customer)
+    Customer getCustomer(int customerId)
+
+
+AccountSubRepository.java
+
+    bool createAccountSub(AccountSub accountSub)
+    bool updateAccountSub(AccountSub accountSub) 
+    Accountsub getAccountSub(int accountSubId)

@@ -1,0 +1,63 @@
+package communications.client;
+
+import java.util.Scanner;
+
+import org.apache.log4j.Logger;
+
+import communications.Session;
+
+public class BankClient {
+
+	private Session transaction;
+	private TransactionMessageBean msg;
+	static Logger logger = Logger.getLogger("org.apache.log4j.PatternLayout");
+	
+	BankClient(){
+	
+		transaction = new Session(1080);
+		logger.info("Creating new bankclient session Class:BankClient, line #13");
+		/*Thread t = new Thread(transaction);
+		t.start();*/
+	}
+	
+	/**
+	 * Not 100% sure if this is the way to go. But this method
+	 * should be used to send data to banking subsystem
+	 * @param msg - TransactionMessageBean
+	 */
+	public void send(String msg){
+		logger.info("Sending transaction object Class:BankClient, line #26");
+		transaction.write(msg);
+		
+	}
+	
+	/**
+	 * Not 100% sure if this is the way to go. This method should read responses from server.
+	 * @return
+	 */
+	public String read(){
+		logger.info("Reading transaction object Class:BankClient, line #36");
+		return transaction.read();
+	}
+	
+	public void close(){
+		transaction.close();
+	}
+	
+	
+	public static void main(String[] args){
+		
+		BankClient bank = new BankClient();	
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println("Waiting for ATM response..");
+		String msgIn;
+		logger.info("creating new bank server Class:BankClient, line #44");
+		do{
+			msgIn = bank.read();
+			System.out.println("Client>> " + msgIn);
+			System.out.println("Enter Message:");
+			msgIn = keyboard.nextLine();
+			bank.send(msgIn);
+		}while (msgIn != null);
+	}		
+}

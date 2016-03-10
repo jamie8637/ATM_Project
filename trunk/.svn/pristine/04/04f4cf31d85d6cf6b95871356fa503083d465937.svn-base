@@ -1,0 +1,110 @@
+package data;
+
+
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
+public class DataUtilsTest {
+	
+	@Test
+	public void testConnect() {
+		try {
+			Connection connection = DataUtils.connect();
+			assertTrue("Connection wasn't made", !connection.isClosed());
+			connection.close();
+		} catch (Exception e) {		
+			e.printStackTrace();
+		}
+		finally {
+			
+		}
+	}
+
+
+	@Test
+	public void testInsertCustomerData() {
+		try {
+			Connection connection = DataUtils.connect();
+			int iResult = DataUtils.processStatement("INSERT INTO customer (CustomerFirst, CustomerLast, Username, Password) VALUES ('John', 'Smith', 'jsmith123', 'abc123')", connection, false);
+			assertEquals("Record insert failed", iResult, 1);
+			
+			// rollback, no need to store the data or advance the autoinc.
+			DataUtils.rollback(connection);
+			connection.close();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testDeleteCustomerData() {
+		try {		
+			Connection connection = DataUtils.connect();
+			int iResult = DataUtils.processStatement("INSERT INTO customer (CustomerFirst, CustomerLast, Username, Password) VALUES ('John', 'Smith', 'jsmith123', 'abc123')", connection, false);
+			assertEquals("Record insert failed", iResult, 1);
+			
+			iResult = DataUtils.processStatement("DELETE FROM customer where CustomerFirst = 'John' and CustomerLast = 'Smith' and Username = 'jsmith123' and Password = 'abc123' ", connection, false);
+			assertEquals("Record delete failed", iResult, 1);
+			
+			// rollback, no need to store the data.
+			DataUtils.rollback(connection);
+			connection.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testSelectData() {
+		List<Map<String, Object>> oTable;
+		try {
+			Connection connection = DataUtils.connect();
+			// insert a test record.
+			int iResult = DataUtils.processStatement("INSERT INTO customer (CustomerFirst, CustomerLast, Username, Password) VALUES ('John', 'Smith', 'jsmith123', 'abc123')", connection, false);
+			assertEquals("Record insert failed", iResult, 1);
+
+			// Get the table data
+			oTable = DataUtils.selectData("SELECT CustomerFirst, customer.* FROM customer WHERE username = 'jsmith123' ", connection);	
+			
+			if (oTable != null && oTable.size() > 0) {				
+				for (int i = 0; i < oTable.size(); i++) {
+					// first record in my dataset will be John. This test will have to change with data that is always there.
+					assertEquals("First Name should be John", oTable.get(i).get("CustomerFirst").toString(), "John");
+					
+					// Get column names
+					List<String> oColumnNames = new ArrayList<>();
+					
+					for (String s : oTable.get(i).keySet())
+						oColumnNames.add(s);
+					
+					// verify the first column name is CustomerFirst
+					assertEquals("Column name 1 should be CustomerFirst", oColumnNames.toArray()[0], "CustomerFirst");
+					
+					//String sXml = QueryData.getXMLStringFromTable(oTable);
+				}
+			}
+			else {
+				assertTrue("Could not select client jsmith123", false);
+			}
+				
+			// No need to keep the inserted record.
+			DataUtils.rollback(connection);
+			connection.close();
+		} 
+		catch (Exception e) {			
+			e.printStackTrace();
+		}
+	}
+	
+}

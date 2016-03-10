@@ -1,0 +1,134 @@
+# Host     : localhost
+# Port     : 3306
+# Database : ATMDB
+
+
+SET FOREIGN_KEY_CHECKS=0;
+
+DROP DATABASE IF EXISTS `ATMDB`;
+
+CREATE DATABASE `ATMDB`
+    CHARACTER SET 'utf8'
+    COLLATE 'utf8_general_ci';
+
+USE `ATMDB`;
+
+#
+# Structure for the `account` table : 
+#
+
+DROP TABLE IF EXISTS `account`;
+
+CREATE TABLE `account` (
+  `AccountId` int(11) NOT NULL AUTO_INCREMENT,
+  `CardNumber` varchar(16) NOT NULL,
+  `PrimaryCustomerId` int(11) DEFAULT NULL,
+  `PinNumber` varchar(5) NOT NULL,
+  `FailedAttempts` smallint(6) DEFAULT '0',
+  `AccountLocked` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`AccountId`),
+  UNIQUE KEY `AccountNumber` (`CardNumber`),
+  UNIQUE KEY `CardNumber` (`CardNumber`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `accountsub` table : 
+#
+
+DROP TABLE IF EXISTS `accountsub`;
+
+CREATE TABLE `accountsub` (
+  `AccountSubId` int(11) NOT NULL AUTO_INCREMENT,
+  `AccountId` int(11) NOT NULL,
+  `AccountType` tinyint(4) NOT NULL,
+  `AvailableBalance` decimal(13,2) DEFAULT '0.00',
+  `PendingCredits` decimal(13,2) DEFAULT NULL,
+  `HoldAmount` decimal(13,2) DEFAULT NULL,
+  `AwaitingRelease` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`AccountSubId`),
+  KEY `AccountId` (`AccountId`),
+  CONSTRAINT `accountsub_accountid_fk` FOREIGN KEY (`AccountId`) REFERENCES `account` (`AccountId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `accountcreditlog` table : 
+#
+
+DROP TABLE IF EXISTS `accountcreditlog`;
+
+CREATE TABLE `accountcreditlog` (
+  `AccountCreditLogId` int(11) NOT NULL AUTO_INCREMENT,
+  `AccountSubId` int(11) NOT NULL,
+  `CreditDate` datetime DEFAULT NULL,
+  `AmountCredited` decimal(11,0) DEFAULT NULL,
+  PRIMARY KEY (`AccountCreditLogId`),
+  KEY `AccountSubId` (`AccountSubId`),
+  CONSTRAINT `accountcreditlog_accountsubid_fk` FOREIGN KEY (`AccountSubId`) REFERENCES `accountsub` (`AccountSubId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `customer` table : 
+#
+
+DROP TABLE IF EXISTS `customer`;
+
+CREATE TABLE `customer` (
+  `CustomerId` int(11) NOT NULL AUTO_INCREMENT,
+  `CustomerFirst` varchar(50) DEFAULT NULL,
+  `CustomerLast` varchar(50) DEFAULT NULL,
+  `Username` varchar(20) DEFAULT NULL,
+  `Password` varchar(20) DEFAULT NULL,
+  `Address` varchar(60) DEFAULT NULL,
+  `City` varchar(40) DEFAULT NULL,
+  `State` varchar(20) DEFAULT NULL,
+  `Postal` varchar(12) DEFAULT NULL,
+  `Phone` varchar(10) DEFAULT NULL,
+  `Email` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`CustomerId`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `loginattempt` table : 
+#
+
+DROP TABLE IF EXISTS `loginattempt`;
+
+CREATE TABLE `loginattempt` (
+  `LoginAttemptId` int(11) NOT NULL AUTO_INCREMENT,
+  `AccountId` int(11) NOT NULL,
+  `AttemptedOn` datetime NOT NULL,
+  `Success` tinyint(1) NOT NULL,
+  PRIMARY KEY (`LoginAttemptId`),
+  KEY `AccountId` (`AccountId`),
+  CONSTRAINT `loginattempt_accountid_fk` FOREIGN KEY (`AccountId`) REFERENCES `account` (`AccountId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `transaction` table : 
+#
+
+DROP TABLE IF EXISTS `transaction`;
+
+CREATE TABLE `transaction` (
+  `TransactionId` int(11) NOT NULL AUTO_INCREMENT,
+  `AccountSubId` int(11) NOT NULL,
+  `TransactionDate` datetime NOT NULL,
+  `Amount` decimal(13,2) NOT NULL,
+  `TransactionType` tinyint(4) NOT NULL,
+  `FundType` tinyint(4) NOT NULL,
+  `StartingBalance` decimal(13,2) DEFAULT NULL,
+  `EndingBalance` decimal(13,2) DEFAULT NULL,
+  PRIMARY KEY (`TransactionId`),
+  KEY `AccountSubId` (`AccountSubId`),
+  CONSTRAINT `transaction_accountsubid_fk` FOREIGN KEY (`AccountSubId`) REFERENCES `accountsub` (`AccountSubId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for the `account` table  (LIMIT 0,500)
+#
+
+INSERT INTO `account` (`AccountId`, `CardNumber`, `PrimaryCustomerId`, `PinNumber`, `FailedAttempts`, `AccountLocked`) VALUES 
+  (1,'1234123412341234',NULL,'12345',0,0);
+
+COMMIT;
+

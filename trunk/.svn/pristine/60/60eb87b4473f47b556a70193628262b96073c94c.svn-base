@@ -1,0 +1,82 @@
+package atm.web.model;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.UnknownHostException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
+import atm.business.api.model.BankUser;
+import atm.business.api.services.BankServiceException;
+import com.presentation.service.BankSystemService;
+
+/**
+ * This class represents the banking subsystem and implements a Singleton design pattern (I think..).
+ * @author Adrian R.
+ */
+
+public class BankingSystem {
+
+	private static BankingSystem instance = null;
+	private BankUser user; 
+	private BigDecimal balance;
+	protected BankingSystem(){}
+	
+	/**
+	 * Returns an instance of Banking System.
+	 * @return BankingSystem
+	 */
+	public static BankingSystem getInstance(){
+		if(instance == null)
+			instance = new BankingSystem();
+		return instance;
+	}
+	
+	/**
+	 * Authenticates a BankUser.
+	 * @param request
+	 * @param response
+	 * @return Boolean
+	 * @throws UnknownHostException
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	public Boolean authenticate(HttpServletRequest request, HttpServletResponse response) throws UnknownHostException, JAXBException, IOException{
+		user = new BankUser();
+		user.setCardNumber(request.getParameter("cardnumber"));
+		user.setPin(request.getParameter("pin"));
+			
+		BankSystemService.connect();
+	
+	return BankSystemService.validateUserLogin(user);
+	}
+	
+	/**
+	 * Retrieves account balance.
+	 * @return
+	 * @throws BankServiceException
+	 */
+	public double getBalance() throws BankServiceException{
+		
+		balance = BankSystemService.getBalanace(user);
+		return balance.doubleValue();
+	}
+	
+	/**
+	 * 
+	 */
+	public void makeDeposit(){
+	/*TODO  I'm not sure how this is being implemented from the underlying banking subsystem. 
+			Implementation of this method depends on how that. 	
+	*/
+	}
+	
+	/**
+	 * 
+	 */
+	public void makeWithdraw(){
+	/*TODO  I'm not sure how this is being implemented from the underlying banking subsystem. 
+			Implementation of this method depends on how that. 	
+	 */	
+	}
+}

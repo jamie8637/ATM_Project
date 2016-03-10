@@ -1,0 +1,215 @@
+package communications.client;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import communications.ErrorMessage;
+import communications.TransactionType;
+import atm.business.api.model.BankUser; 
+
+/**
+ *The class will hold transaction data to be sent and received by both ATMClient and BankClient.
+ *
+ * @author Adrian Rhodd
+ */
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+
+public class TransactionMessageBean {
+	
+	@XmlElement
+	private TransactionType transaction;
+	
+	@XmlElement
+	private ErrorMessage error;
+	
+	@XmlElement
+	private double amount;
+	
+	@XmlElement
+	private String PIN;
+	
+	@XmlElement
+	private String cardNumber;
+	
+	@XmlElement
+	private boolean response;
+	
+
+	public TransactionMessageBean(){
+			
+		
+	}
+	
+	/**
+	 * Sets the transaction amount.
+	 * @param amt Transaction amount
+	 */
+	private void setAmount(double amt){
+		amount = amt;
+	}
+	
+	/**
+	 * Returns the transaction amount.
+	 * @return double
+	 */
+	public double getAmount(){
+		return amount;	
+	}
+	
+	/**
+	 * Sets the TransactionType.
+	 * @param type is an enum value from the TransactionType.java class.
+	 * @see TransactionType
+	 */
+	public void setTransactionType(TransactionType type){
+		transaction = type;
+	}
+	/**
+	 * Returns the TransactionType.
+	 * @return enum TransactionType.
+	 * @see TransactionType
+	 */
+	public TransactionType getTransactionType(){
+		return transaction;
+	}
+	
+
+	/**
+	 * Returns status code
+	 * @return enum of type StatusCode
+	 */
+	public ErrorMessage getErrorMessage(){
+		return error;
+	}
+	
+	
+	/**
+	 * Returns BankUser's PIN
+	 */
+	public String getPIN(){
+		return PIN;
+	}
+	
+	/**
+	 * Returns BankUser's card number
+	 */
+	public String getCardNumber(){
+		return cardNumber;
+	} 
+	
+	/**
+	 * ATMClient method for requesting user authentication. 
+	 * @param usr BankUser
+	 */
+	public void authenticationRequest(BankUser usr){
+		transaction = TransactionType.AUTHENTICATION_REQUEST;
+		cardNumber = usr.getCardNumber();
+		PIN = usr.getPin();
+	}
+	
+	/**
+	 * ATMClient method to retrieve bank response to authentication request. 
+	 * @return boolean
+	 */	
+	public boolean authenticationResponse(){
+		transaction = TransactionType.AUTHENTICATION_RESPONSE;
+		return response;
+	}
+	
+	/**
+	 * BankClient method for responding to authentication response.
+	 * @param response boolean
+	 */
+	public void authenticationResponse(boolean response){
+		transaction = TransactionType.AUTHENTICATION_RESPONSE;
+		this.response = response;
+	}
+	
+	/**
+	 * BankClient method for responding to a authentication response with a failed authentication.
+	 * @param response boolean
+	 * @param message enum of type ErrorMessage
+	 * @see ErrorMessage
+	 */
+	public void authenticationResponse(boolean response, ErrorMessage error){
+		transaction = TransactionType.AUTHENTICATION_RESPONSE;
+		this.error = error;
+		this.response = response;
+	}
+		
+	/**
+	 * ATMClient method requesting a withdrawal.
+	 * @param amount double
+	 */
+	public void withdrawalRequest(double amount){
+		transaction = TransactionType.WITHDRAWAL_REQUEST;
+		setAmount(amount);
+	}
+	
+	/**
+	 *ATMClient method to retrieve bank response to withdrawal request 
+	 * @return boolean
+	 */
+	public boolean withdrawalResponse(){
+		return response;
+	}
+	
+	/**
+	 * BankClient method to respond to a withdrawal request.
+	 * @param response
+	 */
+	public void withdrawalResponse(boolean response){
+		transaction = TransactionType.WITHDRAWAL_RESPONSE;
+		this.response = response;
+	}
+	
+	/**
+	 * BankClient method to respond to a failed withdrawal request.
+	 * @param response boolean
+	 * @param error of type ErrorMessage
+	 * @see ErrorMessage
+	 */
+	public void withdrawalResponse(boolean response, ErrorMessage error){
+		transaction = TransactionType.WITHDRAWAL_RESPONSE;
+		this.error = error;
+		this.response = response;
+	}
+	
+	
+	/**
+	 * ATMClient method to request account balance;
+	 */
+	public void accountBalanceRequest(){
+		transaction = TransactionType.ACCOUNT_BALANCE_REQUEST;
+	}
+	
+	/**
+	 * ATMClient method to retrieve bank response to account balance request.
+	 * @return
+	 */
+	public double accountBalanceResponse(){
+		return amount;
+	}
+	
+	/**
+	 * BankClient method for responding to an account balance request.
+	 * @param amount
+	 */
+	public void accountBalanceResponse(double amount){
+		transaction = TransactionType.ACCOUNT_BALANCE_RESPONSE;
+		setAmount(amount);
+	}
+		
+	@Override
+	public String toString(){
+		return "TransactionType: " + transaction.toString() + "\n"
+				+ "Status code: " + error.toString() + "\n" 
+				+ "Reponse: " + response + "/n"
+				+ "Tranaction amount: " + amount + "\n"
+				+ "PIN: " + PIN + "\n"
+				+ "Card number: " + cardNumber + "\n";
+	}
+}

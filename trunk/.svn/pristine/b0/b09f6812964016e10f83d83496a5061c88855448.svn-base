@@ -1,0 +1,146 @@
+package atm.business.server.services;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import data.AccountDAO;
+
+import atm.business.api.model.Account;
+import atm.business.api.model.BankUser;
+import atm.business.api.services.BankServiceException;
+//import data.BankDAO;
+
+public class AccountServiceImplTest {
+
+	AccountServiceImpl accountServiceImpl = new AccountServiceImpl();
+	AccountDAO accountDao = new AccountDAO() {
+
+		@Override
+		public BigDecimal getBalance(long subAccountId) throws SQLException,
+				Exception {
+			if (Long.valueOf("1").equals(subAccountId)) {
+				return BigDecimal.ONE;
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public boolean authenticate(String cardNumber, String pinNumber)
+				throws SQLException, Exception {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+
+		@Override
+		public List getAccountsubs(long cardNumber) throws SQLException,
+				Exception {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public BigDecimal makeDeposit(Account account, BigDecimal depositAmount)
+				throws SQLException, Exception {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public BigDecimal makeWithdrawal(Account account,
+				BigDecimal withdrawalAmount) throws SQLException, Exception {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void makeDeposit(long cardNumber, BigDecimal amount)
+				throws SQLException, Exception {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void makeWithdrawal(long cardNumber, BigDecimal amount)
+				throws SQLException, Exception {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public Boolean createAccount(Account account) throws SQLException,
+				Exception {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	};
+	@Before
+	public void setup(){
+		accountServiceImpl.setAccountDao(accountDao);
+	}
+	
+	@Test
+	public void testEqualsUserBalance() throws BankServiceException  {
+		BankUser bankUser = new BankUser();
+		bankUser.setCardNumber("1");
+		BigDecimal result = accountServiceImpl.getUserBalance(bankUser);
+		assertEquals(BigDecimal.ONE, result);
+	}
+	
+	@Test
+	public void testNotEqualsUserBalance() throws BankServiceException  {
+		BankUser bankUser = new BankUser();
+		bankUser.setCardNumber("1");
+		BigDecimal result = accountServiceImpl.getUserBalance(bankUser);
+		assertNotSame( BigDecimal.TEN, result);
+	}
+	
+	@Test
+	public void testExpectingConverionInability() throws BankServiceException  {
+		BankUser bankUser = new BankUser();
+		bankUser.setCardNumber("");
+		
+		Exception exception = null;
+		
+		try {
+			BigDecimal result = accountServiceImpl.getUserBalance(bankUser);
+		} catch(BankServiceException e) {
+			exception = e;
+		}
+		
+		
+		shouldValidateThrowsExceptionWithMessage(exception, "Unable to convert card number to account ID");
+	}
+	
+	@Test
+	public void testExpectingNullPointer() throws BankServiceException  {
+		
+		BankUser bankUser = new BankUser();
+		bankUser.setCardNumber("1");
+		
+		accountServiceImpl.setAccountDao(null);
+		
+		Exception exception = null;
+		
+		try {
+			BigDecimal result = accountServiceImpl.getUserBalance(bankUser);
+		} catch(BankServiceException e) {
+			exception = e;
+		}
+			
+		shouldValidateThrowsExceptionWithMessage(exception, "An Unknown Exception Occurred");
+	}	
+	
+	private void shouldValidateThrowsExceptionWithMessage(final Exception e, final String message) {
+	    assertNotNull(e);
+	    assertTrue(e.getMessage().contains(message));
+	} 
+}

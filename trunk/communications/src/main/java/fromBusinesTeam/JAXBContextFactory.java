@@ -1,0 +1,21 @@
+package fromBusinesTeam;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
+import communications.Session;
+import atm.business.api.model.Account;
+import atm.business.api.model.BankUser;
+import atm.business.api.model.Customer;
+
+/**
+ * @author mwilson
+ */
+public class JAXBContextFactory {
+
+	public static JAXBContext createContext() throws JAXBException {
+		return JAXBContext.newInstance(ServiceRequest.class,
+				ServiceResponse.class, ExceptionContainer.class,
+				BankUser.class, Account.class, Session.class, Customer.class);
+	}
+}

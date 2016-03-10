@@ -1,0 +1,153 @@
+package atm;
+
+
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+public class ATMwelcome extends JFrame {
+	
+	//Swing Initialization variables
+	private static ATMwelcome welcomeFrame = new ATMwelcome();	// Used to transfer frame state and setVisible(false) upon User Login.
+	private static MainMenu mainMenu;
+	
+	private int accountNumber = 1;
+	private int pinNumber = 1;
+
+	
+	
+	private JButton btnInsertCard;
+	private JButton btnLogin;
+	private JButton btnExit;
+	
+	private JLabel lblAccountNumber;
+	private JLabel lblPinNumber;
+	private JLabel lblWelcomeToSdbank;
+	
+	private JPanel contentPane;
+	private JTextField accTextField;
+	private JTextField pinTextField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ATMwelcome frame = new ATMwelcome();
+					frame.setVisible(true);
+					welcomeFrame = frame;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public ATMwelcome() {
+		setTitle("Welcome to SDBank ATM");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		
+		/**
+		 * Display Labels
+		 */
+		lblWelcomeToSdbank = new JLabel("Welcome to SDBank ATM");
+		lblWelcomeToSdbank.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblWelcomeToSdbank.setBounds(115, 30, 244, 14);
+		contentPane.add(lblWelcomeToSdbank);
+		
+		lblAccountNumber = new JLabel("Account Number:");
+		lblAccountNumber.setBounds(79, 122, 110, 14);
+		contentPane.add(lblAccountNumber);
+		
+		lblPinNumber = new JLabel("Pin Number:");
+		lblPinNumber.setBounds(79, 147, 91, 14);
+		contentPane.add(lblPinNumber);
+		
+		/**
+		 * Display TextField for Account Number
+		 */
+		accTextField = new JTextField();
+		accTextField.setEditable(false);
+		accTextField.setBounds(199, 119, 147, 20);
+		contentPane.add(accTextField);
+		accTextField.setColumns(10);
+		
+		/**
+		 * Display TextField for Pin Number
+		 */
+		pinTextField = new JTextField();
+		pinTextField.setEditable(false);
+		pinTextField.setBounds(199, 146, 147, 20);
+		contentPane.add(pinTextField);
+		pinTextField.setColumns(10);
+		
+		/**
+		 * Display InsertCard Button
+		 */
+		btnInsertCard = new JButton("Insert Card");
+		btnInsertCard.setBounds(164, 65, 111, 23);
+		contentPane.add(btnInsertCard);
+		btnInsertCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnInsertCard.setEnabled(false);
+				accTextField.setEditable(true);
+				pinTextField.setEditable(true);
+				btnLogin.setEnabled(true);
+			}
+		});
+		
+		/**
+		 * Display Exit Button
+		 */
+		btnExit = new JButton("Exit");
+		btnExit.setBounds(341, 239, 91, 23);
+		contentPane.add(btnExit);
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		
+		/**
+		 * Display Login Button
+		 */
+		btnLogin = new JButton("Login");
+		btnLogin.setEnabled(false);
+		btnLogin.setBounds(240, 239, 91, 23);
+		contentPane.add(btnLogin);
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(Integer.parseInt(accTextField.getText()) == accountNumber && Integer.parseInt(pinTextField.getText()) == pinNumber)	{
+					mainMenu = new MainMenu();
+					mainMenu.setVisible(true);
+					welcomeFrame.setVisible(false);
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog(null, "Invalid Account/Pin Number.", "Error",  JOptionPane.ERROR_MESSAGE);
+					accTextField.setText("");
+					pinTextField.setText("");
+				}
+			}
+		});
+	}
+}

@@ -1,0 +1,68 @@
+package atm;
+
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+
+public class MenuPanel extends JPanel {
+
+	private BalancePanel balancePanel;
+	private DepositPanel depositPanel;
+	private ResultsPanel resultsPanel = new ResultsPanel();
+	private WithdrawPanel withdrawPanel;
+	private JButton jbtAccountBalance, jbtDepositFunds, jbtWithdrawFunds;
+	
+	public MenuPanel() {
+		
+		// Add Buttons to Menu Panel
+		add(jbtAccountBalance = new JButton("Account Balance"));
+		add(jbtDepositFunds = new JButton("Deposit Funds"));
+		add(jbtWithdrawFunds = new JButton("Withdraw Funds"));
+		
+		// Set the Layout of the Menu Panel
+		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+		setLayout(boxLayout);
+		jbtAccountBalance.setSize(getPreferredSize());
+		
+		/* Button Action Listeners */
+		jbtAccountBalance.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeAll();
+				balancePanel = new BalancePanel();
+				add(balancePanel);
+				validate();
+				repaint();
+				setVisible(true);
+			}
+		});
+		
+		jbtDepositFunds.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeAll();
+				depositPanel = new DepositPanel();
+				resultsPanel.getLblTitle().setText("Deposit");
+				
+				add(depositPanel);
+				validate();
+				repaint();
+				setVisible(true);
+			}
+		});
+		
+		jbtWithdrawFunds.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeAll();
+				withdrawPanel = new WithdrawPanel();
+				add(withdrawPanel);
+				validate();
+				repaint();
+				setVisible(true);
+			}
+		});
+	}
+}

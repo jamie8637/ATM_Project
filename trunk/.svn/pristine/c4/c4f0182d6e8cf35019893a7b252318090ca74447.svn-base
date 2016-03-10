@@ -1,0 +1,12 @@
+Maven3 Commands:
+
+
+  -- Generate Javadocs --
+  mvn javadoc:javadoc
+
+  -- Run Unit Tests --
+  mvn surefire:test
+
+  -- Generate Unit Reports --
+  mvn surefire-report:report-only
+

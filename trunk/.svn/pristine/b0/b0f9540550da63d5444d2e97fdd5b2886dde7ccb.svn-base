@@ -1,0 +1,89 @@
+package data;
+
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+public class Repository implements BankDAO {
+	
+	/*
+	 * Hold an instance of Repository as a singleton.
+	 */
+	private static Repository instance = new Repository();
+	
+	/**
+	 * The Repository class is intended to be a singleton.  As such, the constructor is private. 
+	 */
+	private Repository() {
+		
+	}
+	
+	/*
+	 * 
+	 */
+	public static Repository getInstance() {
+		return instance;
+	}
+	
+	// This is just for example of a sample query that the business people may request from us.
+	/**
+	 * selectAllCustomerNames selects the data and returns an XML packet back in string format
+	 * 
+	 * @param customerId
+	 * @return String with Xml packet of records.	 
+	 * @author Dave Lawnicki - 9/9/2013
+	 */
+	
+	@Override
+	public String selectAllCustomerNames()  throws SQLException, Exception {		
+		List<Map<String, Object>> oTable = null;
+		try {
+			Connection connection = DataUtils.connect();
+			oTable = DataUtils.selectData("SELECT customerid, CustomerFirst, CustomerLast FROM customer ORDER BY customerid", connection);
+			connection.close();		
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+				
+		// return back to them the XML packet in string format (unless they want in document format).
+		return QueryData.getXMLStringFromTable(oTable);
+	}
+	
+	
+	/**
+	 * @param cardNumber
+	 * @param pinNumber
+	 * @return boolean depending on the user authentication
+	 * @throws SQLException
+	 * @throws Exception
+	 * @author Vandana Arora - 9/18/2013
+	 */
+	@Override
+	public boolean authenticate(String cardNumber, String pinNumber) throws SQLException, Exception {		
+		boolean result;
+		
+		Connection connection = DataUtils.connect();
+		String queryString = "SELECT * FROM account WHERE cardnumber = '"
+				+ cardNumber + "'" + " AND pinnumber = '" + pinNumber + "' ";
+
+		result = DataUtils.runQuery(queryString, connection);
+
+		connection.close();
+		return result;
+	}
+
+	/**
+	 * @param subAccountId
+	 * @return BigDecimal balance of account.
+	 * @author Whoever implements - 10/1/2013
+	 */
+	@Override
+	public BigDecimal getBalance(int subAccountId) throws SQLException, Exception {
+		// TODO Implement the transaction and return data.
+		return null;
+	}
+
+}

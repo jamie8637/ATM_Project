@@ -1,0 +1,144 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+DROP DATABASE IF EXISTS `ATMDB`;
+
+CREATE DATABASE `ATMDB`
+    CHARACTER SET 'utf8'
+    COLLATE 'utf8_general_ci';
+
+USE `ATMDB`;
+
+-- -----------------------------------------------------
+-- Table `customer`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `customer` ;
+
+CREATE TABLE IF NOT EXISTS `customer` (
+  `CustomerId` INT(11) NOT NULL AUTO_INCREMENT,
+  `CustomerFirst` VARCHAR(50) NULL DEFAULT NULL,
+  `CustomerLast` VARCHAR(50) NULL DEFAULT NULL,
+  `Username` VARCHAR(20) NULL DEFAULT NULL,
+  `Password` VARCHAR(20) NULL DEFAULT NULL,
+  `Address` VARCHAR(60) NULL DEFAULT NULL,
+  `City` VARCHAR(40) NULL DEFAULT NULL,
+  `State` VARCHAR(20) NULL DEFAULT NULL,
+  `Postal` VARCHAR(12) NULL DEFAULT NULL,
+  `Phone` VARCHAR(10) NULL DEFAULT NULL,
+  `Email` VARCHAR(50) NULL DEFAULT NULL,
+  PRIMARY KEY (`CustomerId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `account`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `account` ;
+
+CREATE TABLE IF NOT EXISTS `account` (
+  `AccountId` INT(11) NOT NULL AUTO_INCREMENT,
+  `CardNumber` VARCHAR(16) NOT NULL,
+  `PrimaryCustomerId` INT(11) NULL DEFAULT NULL,
+  `PinNumber` VARCHAR(5) NOT NULL,
+  `FailedAttempts` SMALLINT(6) NULL DEFAULT '0',
+  `AccountLocked` TINYINT(1) NULL DEFAULT '0',
+  PRIMARY KEY (`AccountId`),
+  UNIQUE INDEX `AccountNumber` (`CardNumber` ASC),
+  UNIQUE INDEX `CardNumber` (`CardNumber` ASC),
+  INDEX `account_PrimaryCustomerId_fk` (`PrimaryCustomerId` ASC),
+  CONSTRAINT `account_PrimaryCustomerId_fk`
+    FOREIGN KEY (`PrimaryCustomerId`)
+    REFERENCES `customer` (`CustomerId`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `accountsub`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `accountsub` ;
+
+CREATE TABLE IF NOT EXISTS `accountsub` (
+  `AccountSubId` INT(11) NOT NULL AUTO_INCREMENT,
+  `AccountId` INT(11) NOT NULL,
+  `AccountType` TINYINT(4) NOT NULL,
+  `AvailableBalance` DECIMAL(13,2) NULL DEFAULT '0.00',
+  `PendingCredits` DECIMAL(13,2) NULL DEFAULT NULL,
+  `HoldAmount` DECIMAL(13,2) NULL DEFAULT NULL,
+  `AwaitingRelease` TINYINT(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`AccountSubId`),
+  INDEX `AccountId` (`AccountId` ASC),
+  CONSTRAINT `accountsub_accountid_fk`
+    FOREIGN KEY (`AccountId`)
+    REFERENCES `account` (`AccountId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `accountcreditlog`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `accountcreditlog` ;
+
+CREATE TABLE IF NOT EXISTS `accountcreditlog` (
+  `AccountCreditLogId` INT(11) NOT NULL AUTO_INCREMENT,
+  `AccountSubId` INT(11) NOT NULL,
+  `CreditDate` DATETIME NULL DEFAULT NULL,
+  `AmountCredited` DECIMAL(11,0) NULL DEFAULT NULL,
+  PRIMARY KEY (`AccountCreditLogId`),
+  INDEX `AccountSubId` (`AccountSubId` ASC),
+  CONSTRAINT `accountcreditlog_accountsubid_fk`
+    FOREIGN KEY (`AccountSubId`)
+    REFERENCES `accountsub` (`AccountSubId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `loginattempt`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `loginattempt` ;
+
+CREATE TABLE IF NOT EXISTS `loginattempt` (
+  `LoginAttemptId` INT(11) NOT NULL AUTO_INCREMENT,
+  `AccountId` INT(11) NOT NULL,
+  `AttemptedOn` DATETIME NOT NULL,
+  `Success` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`LoginAttemptId`),
+  INDEX `AccountId` (`AccountId` ASC),
+  CONSTRAINT `loginattempt_accountid_fk`
+    FOREIGN KEY (`AccountId`)
+    REFERENCES `account` (`AccountId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `transaction`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `transaction` ;
+
+CREATE TABLE IF NOT EXISTS `transaction` (
+  `TransactionId` INT(11) NOT NULL AUTO_INCREMENT,
+  `AccountSubId` INT(11) NOT NULL,
+  `TransactionDate` DATETIME NOT NULL,
+  `Amount` DECIMAL(13,2) NOT NULL,
+  `TransactionType` TINYINT(4) NOT NULL,
+  `FundType` TINYINT(4) NOT NULL,
+  `StartingBalance` DECIMAL(13,2) NULL DEFAULT NULL,
+  `EndingBalance` DECIMAL(13,2) NULL DEFAULT NULL,
+  PRIMARY KEY (`TransactionId`),
+  INDEX `AccountSubId` (`AccountSubId` ASC),
+  CONSTRAINT `transaction_accountsubid_fk`
+    FOREIGN KEY (`AccountSubId`)
+    REFERENCES `accountsub` (`AccountSubId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

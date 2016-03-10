@@ -1,0 +1,55 @@
+package atm.business.api.model;
+
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * 
+ * @author Joseph Persie
+ * 
+ */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Customer {
+
+	@XmlElement
+	private String customerId;
+	
+	@XmlElement
+	private String customerFirst;
+	
+	@XmlElement
+	private String customerLast;
+
+	public Customer() {
+
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getCustomerFirst() {
+		return customerFirst;
+	}
+
+	public void setCustomerFirst(String customerFirst) {
+		this.customerFirst = customerFirst;
+	}
+
+	public String getCustomerLast() {
+		return customerLast;
+	}
+
+	public void setCustomerLast(String customerLast) {
+		this.customerLast = customerLast;
+	}
+
+}

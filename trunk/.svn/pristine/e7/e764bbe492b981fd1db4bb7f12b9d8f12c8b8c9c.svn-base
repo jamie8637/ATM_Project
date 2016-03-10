@@ -1,0 +1,11 @@
+package communications;
+
+/**
+ * This class should do the actual Java -> XML encoding. I think taking the DOM approach to parsing XML would be easier
+ * than SAX. 
+ * @author Adrian
+ *
+ */
+public class TransactionMessageEncoder {
+
+}

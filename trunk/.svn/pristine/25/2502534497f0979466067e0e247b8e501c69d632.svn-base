@@ -1,0 +1,80 @@
+package atm;
+import java.math.BigDecimal;
+
+import atm.business.api.services.BankServiceException;
+
+import com.presentation.service.BankSystemService;
+
+/**
+ * Class to handle code for Balance transactions
+ */
+public class Balance {
+	public static void displayAccountBalance(int option) {
+		// Displays Account Balance menu options
+		String accountName = "";
+		BigDecimal balance = new BigDecimal(0.0);
+		Boolean isError = false;
+		
+		if(option == 1){
+			accountName = "Checking";
+		} else if (option == 2){
+			accountName = "Savings";
+		} else {
+			//displayMainMenu();
+		}
+		
+		//TODO Call service to get balance for this account
+		try {
+			balance = BankSystemService.getBalanace(ATMmain.getUser());
+		} catch (BankServiceException e) {
+			//TODO Print Error
+			isError=true;
+			ATMmain.clearScreen();
+			ATMmain.printHeader();
+			System.out.println("There was an error getting your balance.\n\tPlease try again later.");
+			System.out.println();
+			System.out.printf("%38s%n", "Press any key to return to Main Menu.");
+			System.out.println();
+			System.out.println("**************************************************");
+			ATMmain.sc.nextInt();
+			//displayMainMenu();
+		}
+			
+		if(!isError){
+			ATMmain.printHeader();
+			System.out.printf("%21s %s%n", accountName.toUpperCase(), "ACCOUNT BALANCE");
+			System.out.println();
+			System.out.printf("%30s%n", ATMmain.formatMoney.format(balance));
+			System.out.println();
+			//System.out.printf("%30s\tPress 1\n", "Return to Balanace Menu");
+			System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+			System.out.println();
+			System.out.print("Enter Selection and Press Enter: ");
+			processAccountBalanceSelection(ATMmain.sc.nextInt());
+		}
+	}
+	
+	private static void processAccountBalanceSelection(int selected) {
+		switch(selected){
+		case 1:
+			break;
+		default:
+			//displayMainMenu();
+			break;
+		}
+	}
+	
+	public static void displayAccountBalanceMenu() {
+		// Displays Account Balance menu options
+		ATMmain.printHeader();
+		System.out.printf("%36s%n", "VIEW ACCOUNT BALANCE");
+		System.out.println();
+		System.out.printf("%30s\tPress 1\n", "Checking Account");
+		System.out.printf("%30s\tPress 2\n", "Savings Account");
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Enter Selection and Press Enter: ");
+		int selection =  ATMmain.sc.nextInt();
+		Balance.displayAccountBalance(selection);
+	}
+}

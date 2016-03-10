@@ -1,0 +1,88 @@
+package atm.business.server.services;
+
+import java.util.Date;
+
+import atm.business.api.model.Session;
+import atm.business.api.services.AuthenticationException;
+import atm.business.api.services.AuthenticationService;
+import atm.business.server.dal.AuthenticationAttemptDao;
+import atm.business.server.dal.BankUserDao;
+import atm.business.server.dal.SessionDao;
+import data.Repository;
+
+/**
+ * 
+ * @author Mike Wilson
+ * 
+ */
+public class AuthenticationServiceImpl implements AuthenticationService {
+
+	private BankUserDao bankUserDao;
+	private SessionDao sessionDao;
+	private AuthenticationAttemptDao authenticationAttemptDao;
+
+	public AuthenticationServiceImpl() {
+
+	}
+
+	public void setBankUserDao(BankUserDao bankUserDao) {
+		this.bankUserDao = bankUserDao;
+	}
+
+	public void setSessionDao(SessionDao sessionDao) {
+		this.sessionDao = sessionDao;
+	}
+
+	public void setAuthenticationAttemptDao(
+			AuthenticationAttemptDao authenticationAttemptDao) {
+		this.authenticationAttemptDao = authenticationAttemptDao;
+	}
+
+	public Session authenticate(String cardNumber, String pin)
+			throws AuthenticationException {
+		Session session = new Session();
+		session.setLastActive(new Date());
+
+		try {
+			if (!Repository.getInstance().authenticate(cardNumber, pin)) {
+				throw new AuthenticationException("Invalid card number or pin");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new AuthenticationException("Failed authentication attempt: "
+					+ e.getMessage());
+		}
+
+		return session;
+	}
+	// public Session authenticate(Integer cardNumber, Integer pin)
+	// throws AuthenticationException {
+	//
+	// Date now = new Date();
+	//
+	// BankUser bankUser = bankUserDao.getBankUserByCardNumber(cardNumber);
+	//
+	// if (bankUser != null && bankUser.getPin().equals(pin)) {
+	// authenticationAttemptDao
+	// .createAuthenticationAttempt(new AuthenticationAttempt(
+	// cardNumber, now, true));
+	//
+	// Session session = sessionDao.createSession(new Session(bankUser,
+	// now));
+	//
+	// if (session == null) {
+	// throw new AuthenticationException("Failed to create a session");
+	// }
+	//
+	// return session;
+	//
+	// } else {
+	//
+	// authenticationAttemptDao
+	// .createAuthenticationAttempt(new AuthenticationAttempt(
+	// cardNumber, now, false));
+	//
+	// throw new AuthenticationException("Invalid card number or pin");
+	// }
+	// }
+}

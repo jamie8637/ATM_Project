@@ -1,0 +1,64 @@
+package atm.business.server.services;
+
+import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
+
+import atm.business.api.model.Customer;
+import atm.business.api.services.CustomerService;
+import atm.business.api.services.BankServiceException;
+import data.CustomerDAO;
+
+public class CustomerServiceImpl implements CustomerService{
+	
+	private CustomerDAO customerDao;
+	private Logger logger = Logger.getLogger(AccountServiceImpl.class);
+	
+	public CustomerDAO getCustomerDao() {
+		return customerDao;
+	}
+
+	public void setCustomerDao(CustomerDAO customerDao) {
+		this.customerDao = customerDao;
+	}
+
+	@Override
+	public String selectAllCustomerNames() throws BankServiceException {
+		// TODO Auto-generated method stub
+		try {
+			return customerDao.selectAllCustomerNames();
+		} catch (SQLException e) {
+			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+
+	@Override
+	public Integer createCustomer(Customer customer)
+			throws BankServiceException {
+		try {
+			return customerDao.createCustomer(customer);
+		} catch (SQLException e) {
+			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+
+	@Override
+	public Boolean updateCustomer(Customer customer)
+			throws BankServiceException {
+		try {
+			return customerDao.updateCustomer(customer);
+		} catch (SQLException e) {
+			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+
+}

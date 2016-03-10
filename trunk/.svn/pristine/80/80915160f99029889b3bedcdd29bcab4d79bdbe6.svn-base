@@ -1,0 +1,22 @@
+package communications;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class AuthenticationResponseTest {
+
+	/**
+	 * Method used to test authentication response desciption
+	 */
+	 
+	@Test
+	public void testAuthenticationResponseErrorDescription() {
+		AuthenticationResponse response = new AuthenticationResponse();
+		
+		response.setAuthenticationErrorDescription("Balance Error!");
+		
+		assertEquals("Balance Error!", response.getAuthenticationErrorDescription());
+	}
+
+}

@@ -1,0 +1,189 @@
+/**
+ * 
+ */
+package data;
+
+import atm.Account;
+import atm.AccountSub;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+
+import data.AccountDAO;
+
+/**
+ * @author C Matthews
+ *
+ */
+public class AccountSubRepository implements AccountDAO {
+	
+	/*
+	 * Hold an instance of AccountSubRepository as a singleton.
+	 * copied from the accountRepository.java file
+	 */
+	private static AccountSubRepository instance = new AccountSubRepository();
+	
+	/**
+	 * The AccountSubRepository class is intended to be a singleton.  As such, the constructor is private. 
+	 */
+	private AccountSubRepository() {
+		
+	}
+	
+	public static AccountSubRepository getInstance() {
+		return instance;
+	}	
+
+	/**
+	 * @param args
+	 * @throws Exception 
+	 */
+	public static void main(String[] args) throws Exception {
+		// just some sample data I used to make sure this worked
+		
+		if(DataUtils.connect() != null)
+			System.out.println("connection");
+		AccountSubRepository n = new AccountSubRepository();
+		AccountSub x = new AccountSub();
+		x.setAccountBalance(645.00);
+		x.setAccountId(1);
+		x.setAccountSubId(123);
+		x.setAccountType(3);
+		x.setAwaitingRelease(0);
+		x.setHoldAmount(75.00);
+		x.setPendingCredits(65.00);
+		
+		n.updateAccountSub(x);
+		System.out.println(n.getAccountSub(123));
+
+	}
+//override the methods from the DAO
+	@Override
+	public boolean authenticate(String cardNumber, String pinNumber)
+			throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public BigDecimal getBalance(int subAccountId) throws SQLException,
+			Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getAccountSubs(String cardNumber)
+			throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal makeDeposit(int subAccountId, BigDecimal depositAmount)
+			throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal makeWithdrawal(int subAccountId,
+			BigDecimal withdrawalAmount) throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean createAccount(Account account) throws SQLException,
+			Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override//requested Method #1
+	public Boolean createAccountSub(AccountSub accountSub) throws SQLException,
+			Exception {
+		Integer accountId = 0;
+
+		try {
+			Connection connection = DataUtils.connect();
+			
+			String createAccountSub = "INSERT INTO `ATMDB`.`accountsub` (`AccountSubId`, `AccountId`, `AccountType`, `AvailableBalance`, `PendingCredits`, `HoldAmount`, `AwaitingRelease`)"
+					+ " VALUES (123, '"+accountSub.getAccountId()+"', '"+accountSub.getAccountType()+"', '"+ accountSub.getAccountBalance() +"','"+accountSub.getPendingCredits()+"','"+
+					accountSub.getHoldAmount()+"','"+accountSub.getAwaitingRelease()+"')";
+			accountId = DataUtils.processStatementGetId(createAccountSub,connection, false);
+            connection.commit();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			accountId = 0;
+		}
+
+		return true;
+	}
+
+	@Override//requested method #2
+	public Boolean updateAccountSub(AccountSub accountSub) throws SQLException,
+			Exception {
+		int accountId =0;
+		
+		//Depending on which field is being updated call the update string
+		String updateBalance = "UPDATE `ATMDB`.`accountsub` SET `AvailableBalance` = "+accountSub.getAccountBalance()+" WHERE `AccountSubId` = "+
+				accountSub.getAccountSubId();
+				
+		String updateCredits = "UPDATE `ATMDB`.`accountsub` SET `PendingCredits` = "+accountSub.getPendingCredits()+" WHERE `AccountSubId` = "+
+				accountSub.getAccountSubId();
+		
+		String updateHoldAmt = "UPDATE `ATMDB`.`accountsub` SET `HoldAmount` = "+accountSub.getHoldAmount()+" WHERE `AccountSubId` = "+
+				accountSub.getAccountSubId();
+		
+		String updateAwaitingRel = "UPDATE `ATMDB`.`accountsub` SET `AwaitingRelease` = "+accountSub.getAwaitingRelease()+" WHERE `AccountSubId` = "+
+				accountSub.getAccountSubId();
+						
+				try
+				{//not sure why I need accountID but I left it in until I get more clarification
+					Connection connection = DataUtils.connect();
+					accountId = DataUtils.processStatementGetId(updateBalance,connection, false);
+					accountId = DataUtils.processStatementGetId(updateCredits,connection, false);
+					accountId = DataUtils.processStatementGetId(updateHoldAmt,connection, false);
+					accountId = DataUtils.processStatementGetId(updateAwaitingRel,connection, false);
+		            connection.commit();
+					connection.close();
+					 
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+		
+		return true;
+	}
+	
+	public List<Map<String,Object>> getAccountSub(int accountSubId)  throws SQLException,
+	Exception  
+	{//not sure if this should be in the DAO or not. made the return a list instead of an accountsub object
+		//will this return something we can use? trying to use the function Law wrote to return a list of values from the query
+		
+		List<Map<String,Object>> AccountSubInfo = new ArrayList<Map<String, Object>>();
+
+		try {
+			Connection connection = DataUtils.connect();
+			
+			String viewAccountSub = "SELECT * FROM `ATMDB`.`accountsub` WHERE `AccountSubId` = "+accountSubId;
+			AccountSubInfo = DataUtils.selectData(viewAccountSub, connection);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return AccountSubInfo;
+	}
+
+
+}

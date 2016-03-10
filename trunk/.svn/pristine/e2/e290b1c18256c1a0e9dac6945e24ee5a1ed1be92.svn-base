@@ -1,0 +1,159 @@
+package communications;
+
+import org.apache.log4j.Logger;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+/**
+ * This class initiates TCP requirements to provide communications between the ATMClient and BankClient. 
+ * @author Adrian Rhodd
+ *
+ */
+public abstract class Session {
+	
+	static Logger logger = Logger.getLogger("org.apache.log4j.PatternLayout");
+	private Socket connection;
+	private ServerSocket serverConnection;
+	protected BufferedReader input;
+	protected BufferedWriter output;
+	protected int defaultPort = 1080;
+	
+	/**
+	 * ATMClient constructor 
+	 * @param socket socket
+	 * @param port port number
+	 */
+	Session(String server, int port){		
+		
+		try{
+		logger.info("attempting new server connection in Class:Session, line #21");
+		connection = new Socket(server, port);
+		System.out.println("Connected to " + server + "on port " + port);
+		}catch(UnknownHostException e){
+			logger.fatal("unknown host exception Class:Session, line #42");
+			System.err.println(e);
+		} catch (IOException e) {
+			logger.fatal("IO exception Class:Session, line #44");
+			System.err.println(e);
+		}
+		start();
+	}
+	
+	/**
+	 * Default ATMClient constructor. Attempts to connect to localhost on port 1080.
+	 */
+	public Session(){
+		String defaultHost = "localhost";
+		
+		try{
+			connection = new Socket(defaultHost, defaultPort);
+			System.out.println("Connected to " + defaultHost + " on port " + defaultPort);
+		}catch(UnknownHostException e){
+			logger.fatal("unknown host exception Class:Session, line #60");
+			System.err.println(e);
+		}catch(IOException e){
+			logger.fatal("IO exception Class:Session, line #63");
+			System.err.println(e);
+		}
+		start();
+	}
+	
+	/**
+	 * BankClient Constructor that starts a new Thread.
+	 * @param port int. 
+	 */
+	public Session(int port){
+		System.out.println("Initializing..");
+		
+		try{
+			serverConnection = new ServerSocket(port);
+			System.out.println("Listening on port " + port);
+			connection = serverConnection.accept();
+			input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			output = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+			System.out.println("Connection established..");
+		}catch(IOException e){
+			logger.fatal("IO exception Class:Session, line #84");
+			System.err.println(e);
+		}
+		//run();//TODO: Make this a thread
+	}
+	
+	public void run(){
+		
+		try {
+			output.write("You've reached the server.");
+			output.newLine();
+			output.flush();
+		} catch (IOException e) {
+			logger.fatal("IO exception Class:Session, line #98");
+			System.err.println(e);
+		}
+	}
+	
+	/**
+	 * Starts a the TCP session to begin ATM/Bank transactions. 
+	 */
+	private void start(){
+		try {
+			input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			output = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+		} catch (IOException e) {
+			logger.fatal("IO exception Class:Session, line #110");
+			System.out.println(e);
+		}
+	}
+	
+	/**
+	 * Writes to OutputStream
+	 * @param msg
+	 * @throws  
+	 */
+	public void write(String msg){
+		try{
+			output.write(msg);
+			output.newLine();
+			output.flush();		
+		}catch (IOException e){
+			logger.fatal("IO exception Class:Session, line #129");
+			System.err.println(e);
+		}
+	}
+	/**
+	 * Reads in from the InputStream
+	 * @return
+	 */
+	public String read(){
+		String msgIn = null;
+		
+		try{
+			msgIn = input.readLine();
+		}catch(IOException e){
+			logger.fatal("IO exception Class:Session, line #144");
+			System.err.println(e);
+		}	
+		return msgIn;
+	}
+	
+	/**
+	 * Closes the TCP session to end ATM/Bank transactions.
+	 */	
+	public void close(){
+		try {
+			
+			input.close();
+			output.close();
+			connection.close();
+			
+		} catch (IOException e) {
+			logger.fatal("IO exception Class:Session, line #163");
+			e.printStackTrace();
+		}
+	}
+}

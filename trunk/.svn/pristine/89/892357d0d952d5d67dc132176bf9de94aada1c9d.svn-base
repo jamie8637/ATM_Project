@@ -1,0 +1,11 @@
+package atm.business.api.services;
+
+import atm.business.api.model.Customer;
+
+
+public interface CustomerService {
+
+	String selectAllCustomerNames() throws BankServiceException;
+    Integer createCustomer(Customer customer) throws BankServiceException;
+    Boolean updateCustomer(Customer customer) throws BankServiceException;
+}

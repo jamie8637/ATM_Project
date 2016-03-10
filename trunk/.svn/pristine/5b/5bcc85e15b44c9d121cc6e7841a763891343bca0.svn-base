@@ -1,0 +1,153 @@
+package data;
+
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import atm.business.api.model.Customer;
+
+public class Repository implements BankDAO {
+	
+	/*
+	 * Hold an instance of Repository as a singleton.
+	 */
+	private static Repository instance = new Repository();
+	
+	/**
+	 * The Repository class is intended to be a singleton.  As such, the constructor is private. 
+	 */
+	private Repository() {
+		
+	}
+	
+	/*
+	 * 
+	 */
+	public static Repository getInstance() {
+		return instance;
+	}
+	
+	// This is just for example of a sample query that the business people may request from us.
+	/**
+	 * selectAllCustomerNames selects the data and returns an XML packet back in string format
+	 * 
+	 * @param customerId
+	 * @return String with Xml packet of records.	 
+	 * @author Dave Lawnicki - 9/9/2013
+	 */
+	
+	@Override
+	public String selectAllCustomerNames()  throws SQLException, Exception {		
+		List<Map<String, Object>> oTable = null;
+		try {
+			Connection connection = DataUtils.connect();
+			oTable = DataUtils.selectData("SELECT customerid, CustomerFirst, CustomerLast FROM customer ORDER BY customerid", connection);
+			connection.close();		
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+				
+		// return back to them the XML packet in string format (unless they want in document format).
+		return QueryData.getXMLStringFromTable(oTable);
+	}
+	
+	
+	/**
+	 * @param cardNumber
+	 * @param pinNumber
+	 * @return boolean depending on the user authentication
+	 * @throws SQLException
+	 * @throws Exception
+	 * @author Vandana Arora - 9/18/2013
+	 */
+	@Override
+	public boolean authenticate(String cardNumber, String pinNumber) throws SQLException, Exception {		
+		boolean result;
+		
+		Connection connection = DataUtils.connect();
+		String queryString = "SELECT * FROM account WHERE cardnumber = '"
+				+ cardNumber + "'" + " AND pinnumber = '" + pinNumber + "' ";
+
+		result = DataUtils.runQuery(queryString, connection);
+
+		connection.close();
+		return result;
+	}
+
+	/**
+	 * getBalance accepts an integer for the account subId and returns a Big Decimal.
+	 * The BigDecimal scale of the returned value is setScale(2, RoundingMode.HALF_UP);
+	 * @param subAccountId
+	 * @return BigDecimal balance of account.
+	 * @author Law Barstow  - 10/5/2012
+	 */
+	@Override
+	public BigDecimal getBalance(long cardNumber) throws SQLException, Exception {
+		BigDecimal balance;
+		List<Map<String, Object>> oResults = null;
+		try {
+			Connection connection = DataUtils.connect();
+			String balanceQuery = "SELECT AvailableBalance from accountSub "
+					+ "where accountId = (SELECT AccountID from account WHERE CardNumber = '" + cardNumber + "' LIMIT 1)";
+			oResults = DataUtils.selectData(balanceQuery, connection);
+			balance = new BigDecimal(oResults.get(0).get("AvailableBalance").toString());
+			balance.setScale(2, RoundingMode.HALF_UP);
+			connection.close();
+		} catch (Exception e){
+			e.printStackTrace();
+			balance = new BigDecimal(0.0);
+		}
+		
+		return balance;
+	}
+	
+	public Integer createCustomer(Customer customer) throws SQLException, Exception {
+
+		Integer customerId = 0;
+		
+		try {
+			Connection connection = DataUtils.connect();
+			//use the customer object getters to build the query
+			String createCustomer = "INSERT INTO customer ";
+			customerId = DataUtils.processStatementGetId(createCustomer,connection, false);//autocommit? thats scary
+			connection.close();
+		} catch (Exception e){
+			e.printStackTrace();
+			customerId = 0;
+		}
+
+		//should return the customerId of the new customer;
+		return customerId;
+	}
+	
+	
+	public Boolean updateCustomer(Customer customer) throws SQLException, Exception {
+
+		Boolean updateSuccess = false;
+		
+		try {
+			Connection connection = DataUtils.connect();
+			//use the customer object getters to build the query
+			String updateCustomer = "UPDATE customer ";
+			int rowsAffected = DataUtils.processStatement(updateCustomer, connection, false);
+            if(rowsAffected == 1) {
+            	updateSuccess = true;
+            }
+            else {
+            	updateSuccess = false; 
+            	connection.rollback();
+            }
+			connection.close();
+		} catch (Exception e){
+			e.printStackTrace();
+			updateSuccess = false;
+		}
+		
+		//should return a boolean value representing the 
+		return updateSuccess;
+	}
+
+}

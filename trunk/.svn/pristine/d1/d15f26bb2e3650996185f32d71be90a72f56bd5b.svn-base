@@ -1,0 +1,2 @@
+INSERT INTO `customer` (`CustomerId`, `CustomerFirst`, `CustomerLast`, `Username`, `Password`, `Address`, `City`, `State`, `Postal`, `Email`, `Phone`) VALUES 
+  (1,'John','Smith','jsmith','12345', '12345 Anywhere Street', 'Orlando', 'FL', '32811', 'jsmith@gmail.com', '4075551212');

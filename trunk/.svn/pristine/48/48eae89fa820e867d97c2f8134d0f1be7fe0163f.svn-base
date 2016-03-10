@@ -1,0 +1,8 @@
+package atm.business.api.services;
+
+
+public interface CustomerService {
+
+	String selectAllCustomerNames() throws BankServiceException;
+
+}

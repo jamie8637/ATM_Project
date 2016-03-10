@@ -1,0 +1,76 @@
+package atm.business.server;
+
+import javax.xml.bind.JAXBContext;
+
+import atm.business.api.services.AccountService;
+import atm.business.api.services.AuthenticationService;
+import atm.business.api.services.CustomerService;
+import atm.business.server.services.AccountServiceImpl;
+import atm.business.server.services.AuthenticationServiceImpl;
+import atm.business.server.services.CustomerServiceImpl;
+import data.Repository;
+import fromBusinesTeam.JAXBContextFactory;
+import fromBusinesTeam.ServiceInvokingRequestProcessor;
+import fromBusinesTeam.TcpServer;
+
+/**
+ * Main class used to start up the ATM server (the bank).
+ * 
+ * @author Mike Wilson
+ * 
+ */
+public class Server {
+
+	public static void main(String[] args) throws Exception {
+		Server server = new Server();
+		server.start();
+	}
+
+	private Server() {
+	}
+
+	/**
+	 * This method should create and initialize the different components and
+	 * services.
+	 * 
+	 * @throws Exception
+	 */
+	private void start() throws Exception {
+
+		// create data access layer objects
+
+		// create business layer services
+		AuthenticationServiceImpl authenticationService = new AuthenticationServiceImpl();
+		AccountServiceImpl accountService = new AccountServiceImpl();
+		CustomerServiceImpl customerService = new CustomerServiceImpl();
+		
+		// inject data access layer objects into business layer services
+		// (basically wire everything together)
+		accountService.setBankDAO(Repository.getInstance());
+		
+		customerService.setBankDAO(Repository.getInstance());
+
+		// create TCP listener (or whatever the communication layer
+		// requires)
+		JAXBContext jaxb = JAXBContextFactory.createContext();
+
+		ServiceInvokingRequestProcessor serviceInvoker = new ServiceInvokingRequestProcessor(
+				jaxb.createMarshaller(), jaxb.createUnmarshaller());
+
+		TcpServer server = new TcpServer(4242, serviceInvoker);
+		System.out.println("server created");
+
+		System.out.println("registering services");
+		serviceInvoker.registerService(
+				AuthenticationService.class.getSimpleName(),
+				authenticationService);
+		serviceInvoker.registerService(AccountService.class.getSimpleName(), accountService);
+		serviceInvoker.registerService(CustomerService.class.getSimpleName(), customerService);
+		
+		System.out.println("starting tcp server");
+		server.start();
+		System.out.println("done starting tcp server");
+
+	}
+
+}

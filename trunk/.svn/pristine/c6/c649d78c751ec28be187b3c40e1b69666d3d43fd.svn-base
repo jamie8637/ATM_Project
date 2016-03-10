@@ -1,0 +1,3 @@
+package communications;
+
+public enum StatusCode {INSUFFICENT_FUNDS, INVALID_CARDNUMBER, INVALID_PIN} 

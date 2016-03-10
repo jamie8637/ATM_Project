@@ -1,0 +1,98 @@
+package atm;
+
+import java.math.BigDecimal;
+
+import com.presentation.service.BankSystemService;
+
+import atm.business.api.model.Account;
+import atm.business.api.services.BankServiceException;
+
+/**
+ * Class to handle code for Deposit transactions
+ */
+public class Deposit {
+	Account account;
+	static BigDecimal entry;
+	
+	public static void displayDepositMenu() {
+		ATMmain.printHeader();
+		System.out.printf("%21s %s%n", "", "DEPOSIT");
+		System.out.println();
+		System.out.printf("%46" +
+				"s%n", "Enter Total Deposit Amount or 0 to Cancel");
+		System.out.println();
+		//System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Type Selection and Press Enter: ");
+		processDepositSelection(ATMmain.sc.nextBigDecimal());
+	}
+	
+	public static void displayDepositConfirmation() {
+		ATMmain.printHeader();
+		System.out.printf("%15s %s%n", "", "DEPOSIT COMPLETE");
+		System.out.println();
+		System.out.printf("%45s%n", ATMmain.formatMoney.format(entry) + " was deposited successfully.");
+		System.out.println();
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Type Selection and Press Enter: ");
+		processDepositSelection(ATMmain.sc.nextBigDecimal());
+	}
+	
+	public static void displayInsertDeposit() {
+		ATMmain.printHeader();
+		System.out.printf("%15s %s%n", "", "INSERT DEPOSIT");
+		System.out.println();
+		System.out.printf("%49s%n", "Insert your checks/cash into deposit slot below");
+		System.out.println();
+		System.out.printf("%32s  Press 1\n", "After Deposit Is Complete");
+		System.out.printf("%32s  Press 0\n", "Cancel Deposit");
+		System.out.println();
+		System.out.print("Type Selection and Press Enter: ");
+		processDepositEntered(ATMmain.sc.nextInt());
+	}
+	
+	public static void displayDepositError(String message) {
+		ATMmain.printHeader();
+		System.out.printf("%15s $s%n","", "DEPOSIT ERROR");
+		System.out.println();
+		System.out.printf("%40s%n", message);
+		System.out.println();
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Type Selection and Press Enter: ");
+		processDepositSelection(ATMmain.sc.nextBigDecimal());
+	}
+	
+	private static void processDepositSelection(BigDecimal bigDecimal) {
+		entry = bigDecimal;
+		if(entry.compareTo(BigDecimal.ZERO) == 0){
+			//Cancel deposit and return to main menu
+		} else {
+			//DEPOSIT FUNDS
+			displayInsertDeposit();
+		}
+		
+	}
+	
+	private static void processDepositEntered(int nextInt) {
+		switch(nextInt){
+		case 0:
+			break;
+		default:
+			try {
+				BankSystemService.makeDeposit(ATMmain.getUser(), entry);
+				displayDepositConfirmation();
+			} catch (BankServiceException bse) {
+				// TODO Auto-generated catch block
+				bse.printStackTrace();
+				displayDepositError(bse.getMessage());
+			} catch (Exception ex){
+				ex.printStackTrace();
+				displayDepositError("There was an error with your deposit");
+			}
+			break;
+		}
+	}
+
+}

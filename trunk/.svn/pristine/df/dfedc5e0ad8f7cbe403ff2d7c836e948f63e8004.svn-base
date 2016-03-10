@@ -1,0 +1,25 @@
+/**
+ * Class to handle code for Withdrawal transactions
+ */
+public class Withdrawal {
+	
+	public static void displayWithdrawMenu() {
+		ATMmain.printHeader();
+		System.out.printf("%21s %s%n", "", "WITHDRAWAL");
+		System.out.println();
+		System.out.printf("%47s%n", "{{This is where the withdrawal will go.}}");
+		System.out.println();
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Enter Selection and Press Enter: ");
+		processWithdrawalSelection(ATMmain.sc.nextInt());
+	}
+
+	private static void processWithdrawalSelection(int selected) {
+		switch(selected){
+		default:
+			//displayMainMenu();
+			break;
+		}
+	}	
+}

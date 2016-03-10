@@ -1,0 +1,79 @@
+package com.presentation.service;
+
+import atm.business.api.model.BankUser;
+
+import communications.client.ATMClient;
+import communications.client.TransactionMessageBean;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BankSystemService.
+ */
+public class BankSystemService {
+	
+	/** The atm client. */
+	private static ATMClient atmClient;
+
+	/**
+	 * Connect.
+	 *
+	 * @return true, if successful
+	 */
+	public static boolean connect() {
+		atmClient = new ATMClient();
+		
+		return true;
+	}
+
+	/**
+	 * Disconnect.
+	 *
+	 * @return true, if successful
+	 */
+	public static boolean disconnect() {
+		//CHANGE THIS WHEN THEY IMPLEMENT ACTUAL DISCONNECT METHOD
+		atmClient = null;
+		return true;
+	}
+
+	/**
+	 * Validate user login.
+	 *
+	 * @param user the user
+	 * @return true, if successful
+	 */
+	public static boolean validateUserLogin(BankUser user) {
+		
+		if (connect()) {
+			//Convert to transaction bean
+			TransactionMessageBean bean = new TransactionMessageBean();
+			bean.authenticationRequest(user);
+			
+			//Convert to XML
+			String xml = null;
+			
+			//Send to server
+			String response = atmClient.send(xml);
+			
+			//Deconvert XML
+			
+			//Take action based on deconversion
+		} 
+		
+		return false;
+	}
+	
+	/**
+	 * Gets the balanace.
+	 *
+	 * @return the balanace
+	 */
+	public static void getBalanace() {
+		//SO WHAT UP
+	}
+
+	/**
+	 * Finish Defining Once data model becomes more clear withdrawFunds()
+	 * depositFunds() checkBalance()
+	 */
+}

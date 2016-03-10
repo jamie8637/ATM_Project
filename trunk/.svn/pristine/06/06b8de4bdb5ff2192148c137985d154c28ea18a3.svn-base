@@ -1,0 +1,21 @@
+package data;
+
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+
+import atm.business.api.model.Customer;
+
+
+/**
+ * 
+ * @author Dave Lawnicki - 10/1/2013
+ * Data access interface begins here.
+ */
+public interface BankDAO {
+	public boolean authenticate(String cardNumber, String pinNumber) throws SQLException, Exception;
+	public BigDecimal getBalance(long subAccountId) throws SQLException, Exception;	
+	public String selectAllCustomerNames()  throws SQLException, Exception;
+	public Integer createCustomer(Customer customer)  throws SQLException, Exception;
+	public Boolean updateCustomer(Customer customer)  throws SQLException, Exception;
+}

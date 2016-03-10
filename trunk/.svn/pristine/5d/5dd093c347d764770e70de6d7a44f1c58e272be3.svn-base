@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.sdtwo</groupId>
+		<artifactId>sdtwo-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>communications-api</artifactId>
+	<name>ATM Communications api</name>
+	<description>Provides Client/Server communications</description>
+
+	<organization>
+		<name>University of Central Florida</name>
+		<url>www.ucf.edu</url>
+	</organization>
+	<inceptionYear>Fall 2013</inceptionYear>
+	<developers>
+		<developer>
+			<name>Aaron Bickhaus</name>
+		</developer>
+		<developer>
+			<name>Brandon Wolfgang</name>
+		</developer>
+		<developer>
+			<name>Brett Swift</name>
+		</developer>
+		<developer>
+			<name>David Van Buren</name>
+		</developer>
+		<developer>
+			<name>Pat McAleavey</name>
+		</developer>
+		<developer>
+			<name>Adrian Rhodd</name>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>business-public-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>

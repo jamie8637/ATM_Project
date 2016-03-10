@@ -1,0 +1,296 @@
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Scanner;
+
+import atm.business.api.model.BankUser;
+import atm.business.api.services.BankServiceException;
+
+import com.presentation.service.AtmService;
+import com.presentation.service.BankSystemService;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ATMmain.
+ */
+public class ATMmain {
+	private static final String ATM_VERSION = "0.05";
+	
+	// ATM Initialization Variables
+	private static BigDecimal amountInATM = new BigDecimal(1000.00);
+	private static String bankName = "SD Bank";
+	private static short consoleWidth = 50;
+
+	private static String entered;
+	private static Scanner sc = new Scanner(System.in);
+	
+	private static NumberFormat formatMoney = NumberFormat.getCurrencyInstance();
+	private static BankUser user;
+
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            the arguments
+	 */
+	public static void main(String[] args) {
+
+		// Initialize ATM with cash and bankType
+		AtmService.initializeAtm(amountInATM, bankName);
+
+		// Loop while ATM is functional
+		try {
+			while (AtmService.isFunctional()) {
+				displayWelcomeScreen();
+
+				// Stay on welcome screen until user presses Enter key to login
+				entered = sc.nextLine();
+				BankSystemService.connect();
+				if (entered != null) {
+					user = displayLoginScreen();
+					if (BankSystemService.validateUserLogin(user)){
+						int selected;
+						selected = displayMainMenu();
+						processMainMenuSelection(selected);
+						// TODO Run timer for inactive logout
+					} else {
+						displayInvalidLogin();
+					}
+				}
+			}
+		} catch (Exception ex) {
+			String failureMessage = ex.getMessage();
+			AtmService.setFailureState(failureMessage, false);
+		}
+
+		if (!AtmService.isFunctional()) {
+			// Display error message
+		}
+
+	}
+
+	private static void processMainMenuSelection(int selected) {
+		switch(selected){
+		case 0:
+			displayWelcomeScreen();
+			break;
+		case 1:
+			displayAccountBalance(1);
+			break;
+		case 2:
+			displayWithdrawMenu();
+			break;
+		case 3:
+			displayDepositMenu();
+			break;
+		}
+		
+	}
+
+	private static void displayDepositMenu() {
+		printHeader();
+		System.out.printf("%21s %s%n", "", "DEPOSIT");
+		System.out.println();
+		System.out.printf("%25s\t", "This is where the deposit will go.");
+		System.out.println();
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Enter Selection and Press Enter: ");
+		processDepositSelection(sc.nextInt());
+		
+	}
+
+	private static void processDepositSelection(int selected) {
+		switch(selected){
+		default:
+			displayMainMenu();
+			break;
+		}
+		
+	}
+
+	private static void displayWithdrawMenu() {
+		printHeader();
+		System.out.printf("%21s %s%n", "", "WITHDRAWAL");
+		System.out.println();
+		System.out.printf("%25s\t", "This is where the withdrawal will go.");
+		System.out.println();
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Enter Selection and Press Enter: ");
+		processWithdrawalSelection(sc.nextInt());
+		
+	}
+
+	private static void processWithdrawalSelection(int selected) {
+		switch(selected){
+		default:
+			displayMainMenu();
+			break;
+		}
+	}
+
+	private static void displayAccountBalanceMenu() {
+		// Displays Account Balance menu options
+		printHeader();
+		System.out.printf("%36s%n", "VIEW ACCOUNT BALANCE");
+		System.out.println();
+		System.out.printf("%30s\tPress 1\n", "Checking Account");
+		System.out.printf("%30s\tPress 2\n", "Savings Account");
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Enter Selection and Press Enter: ");
+		int selection =  sc.nextInt();
+		displayAccountBalance(selection);
+	}
+	
+	private static void displayAccountBalance(int option) {
+		// Displays Account Balance menu options
+		String accountName = "";
+		BigDecimal balance = new BigDecimal(0.0);
+		Boolean isError = false;
+		
+		if(option == 1){
+			accountName = "Checking";
+		} else if (option == 2){
+			accountName = "Savings";
+		} else {
+			displayMainMenu();
+		}
+		
+		//TODO Call service to get balance for this account
+		try {
+			balance = BankSystemService.getBalanace(user);
+		} catch (BankServiceException e) {
+			//TODO Print Error
+			isError=true;
+			clearScreen();
+			printHeader();
+			System.out.println("There was an error getting your balance.\n\tPlease try again later.");
+			System.out.println();
+			System.out.printf("%38s%n", "Press any key to return to Main Menu.");
+			System.out.println();
+			System.out.println("**************************************************");
+			sc.nextInt();
+			displayMainMenu();
+		}
+			
+		while(!isError){
+			printHeader();
+			System.out.printf("%21s %s%n", accountName.toUpperCase(), "ACCOUNT BALANCE");
+			System.out.println();
+			System.out.printf("%30s\n", formatMoney.format(balance));
+			System.out.println();
+			//System.out.printf("%30s\tPress 1\n", "Return to Balanace Menu");
+			System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+			System.out.println();
+			System.out.print("Enter Selection and Press Enter: ");
+			processAccountBalanceSelection(sc.nextInt());
+		}
+	}
+	
+	private static void processAccountBalanceSelection(int selected) {
+		switch(selected){
+		case 1:
+			processMainMenuSelection(1);
+			break;
+		default:
+			displayMainMenu();
+			break;
+		}
+	}
+
+	/**
+	 * Display welcome screen.
+	 */
+	private static void displayWelcomeScreen() {
+		printHeader();
+		System.out.println();
+		System.out.printf("%38s%n", "Press any key to login.");
+		System.out.println();
+		System.out.println("**************************************************");
+	}
+
+	/**
+	 * Display login screen.
+	 * 
+	 * @return the bank user
+	 */
+	private static BankUser displayLoginScreen() {
+		String accountNumber;
+		String pin;
+
+		BankUser user = new BankUser();
+		
+		// Display login screen asking user to input credentials
+		printHeader();
+		System.out.println();
+		System.out.printf("%38s", "Enter your account number: ");
+		user.setCardNumber(sc.nextLine());
+		System.out.printf("%38s", "Enter your pin: ");
+		user.setPin(sc.nextLine());
+		// TODO populate constructor once business team is done
+		return user;
+	}
+
+	/**
+	 * Display main menu.
+	 */
+	private static int displayMainMenu() {
+		// Displays main menu after successful login
+		printHeader();
+		System.out.printf("%31s%n", "Main Menu");
+		System.out.println();
+		System.out.printf("%30s\tPress 1\n", "View Account Balance");
+		System.out.printf("%30s\tPress 2\n", "Withdraw Funds");
+		System.out.printf("%30s\tPress 3\n", "Deposit Funds");
+		System.out.printf("%30s\tPress 0\n", "Logout of ATM");
+		System.out.println();
+		System.out.print("Enter Selection and Press Enter: ");
+		return (sc.nextInt());
+	}
+
+	/**
+	 * Display invalid login.
+	 */
+	private static void displayInvalidLogin() {
+		// Displays error after wrong user/pin entered.
+
+	}
+
+	private static void clearScreen() {
+		//Cheat clear screen by using new lines
+		for(int i = 0; i < 25; i++){
+			System.out.println("");
+		}
+		
+		try {
+			Runtime.getRuntime().exec("clear");
+			String os = System.getProperty("os.name");
+
+			if (os.contains("Windows")) {
+				Runtime.getRuntime().exec("cls");
+			} else {
+				Runtime.getRuntime().exec("clear");
+			}
+		} catch (Exception exception) {
+			// Handle exception.
+		}
+	}
+	
+	public static String getATMversion(){
+		return ATM_VERSION;
+	}
+	
+	private static String printATMversion(){
+		return "ATM Software v" + getATMversion();
+	}
+	
+	private static void printHeader(){
+		clearScreen();
+		System.out
+				.println("**************************************************");
+		System.out.printf("%28s%4s%15s%n ", bankName ,"", printATMversion());
+		System.out.println();
+	}
+
+}

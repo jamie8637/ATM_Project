@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <display-name>presentation-web</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <servlet-name>ATM Login</servlet-name>
+    <servlet-class>atm.web.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ATM Login</servlet-name>
+    <url-pattern>/Login.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AccountBalance</servlet-name>
+    <servlet-class>atm.web.AccountBalanceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AccountBalance</servlet-name>
+    <url-pattern>/AccountBalance.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Withdraw</servlet-name>
+    <servlet-class>atm.web.WithdrawServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Withdraw</servlet-name>
+    <url-pattern>/Withdraw.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Deposit</servlet-name>
+    <servlet-class>atm.web.DepositServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Deposit</servlet-name>
+    <url-pattern>/Deposit.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CreateAccountServlet</display-name>
+    <servlet-name>CreateAccountServlet</servlet-name>
+    <servlet-class>atm.web.CreateAccountServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateAccountServlet</servlet-name>
+    <url-pattern>/CreateAccountServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CreateCustomerServlet</display-name>
+    <servlet-name>CreateCustomerServlet</servlet-name>
+    <servlet-class>atm.web.CreateCustomerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateCustomerServlet</servlet-name>
+    <url-pattern>/CreateCustomerServlet</url-pattern>
+  </servlet-mapping>
+</web-app>

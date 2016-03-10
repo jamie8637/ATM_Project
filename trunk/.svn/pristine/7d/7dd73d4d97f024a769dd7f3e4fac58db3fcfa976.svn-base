@@ -1,0 +1,57 @@
+import java.math.BigDecimal;
+
+import atm.business.api.services.BankServiceException;
+
+import com.presentation.service.BankSystemService;
+import com.presentation.service.CustomerSystemService;
+
+/**
+ * Class to handle code for Balance transactions
+ */
+public class Customers {
+	
+	public static void viewCustomers() {
+
+		String customerNames = null;
+		boolean isError = false;
+		//TODO Call service to get balance for this account
+		try {
+			customerNames = CustomerSystemService.selectAllCustomerNames();
+		} catch (BankServiceException e) {
+			//TODO Print Error
+			isError=true;
+			ManagerMain.clearScreen();
+			ManagerMain.printHeader();
+			System.out.println("There was an error getting the customer names.\n\tPlease try again later.");
+			System.out.println();
+			System.out.printf("%38s%n", "Press any key to return to Main Menu.");
+			System.out.println();
+			System.out.println("**************************************************");
+			ManagerMain.sc.nextInt();
+			//displayMainMenu();
+		} catch(Exception e) {
+			e.printStackTrace();
+			isError=true;
+		}
+		
+		if(!isError){
+			ManagerMain.printHeader();
+			System.out.printf("Customers");
+			System.out.println();
+			System.out.printf(customerNames);
+			System.out.println();
+			//System.out.printf("%30s\tPress 1\n", "Return to Balanace Menu");
+			System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+			System.out.println();
+
+		}
+	}
+	public static void createCustomer() {
+				
+	}
+	
+	public static void updateCustomer() {
+		
+	}
+	
+}

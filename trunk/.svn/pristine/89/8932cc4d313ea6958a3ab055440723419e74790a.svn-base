@@ -1,0 +1,25 @@
+package communications;
+
+import javax.xml.parsers.*;
+
+import communications.client.TransactionMessageBean;
+
+/**
+ * This class should perform the XML -> Java conversion. 
+ * @author Adrian
+ *
+ */
+public class TransactionMessageParser {
+
+	private TransactionMessageBean bean;
+	
+	
+	TransactionMessageParser(){
+		
+	}	
+	
+	
+	public TransactionMessageBean getMessageBean(){
+		return bean;
+	}
+}

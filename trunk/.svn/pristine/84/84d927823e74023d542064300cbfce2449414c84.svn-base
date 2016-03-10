@@ -1,0 +1,278 @@
+package data;
+
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import atm.business.api.model.Account;
+
+public class AccountRepository implements AccountDAO {
+	
+	/*
+	 * Hold an instance of Repository as a singleton.
+	 */
+	private static AccountRepository instance = new AccountRepository();
+	
+	/**
+	 * The Repository class is intended to be a singleton.  As such, the constructor is private. 
+	 */
+	private AccountRepository() {
+		
+	}
+	
+	/*
+	 * 
+	 */
+	public static AccountRepository getInstance() {
+		return instance;
+	}	
+	
+	/**
+	 * @param cardNumber
+	 * @param pinNumber
+	 * @return boolean depending on the user authentication
+	 * @throws SQLException
+	 * @throws Exception
+	 * @author Vandana Arora - 9/18/2013
+	 */
+	@Override
+	public boolean authenticate(String cardNumber, String pinNumber) throws SQLException, Exception {		
+		boolean result;
+		
+		Connection connection = DataUtils.connect();
+		String queryString = "SELECT * FROM account WHERE cardnumber = '"
+				+ cardNumber + "'" + " AND pinnumber = '" + pinNumber + "' ";
+
+		result = DataUtils.runQuery(queryString, connection);
+
+		connection.close();
+		return result;
+	}
+
+	/**
+	 * getBalance accepts an integer for the account subId and returns a Big Decimal.
+	 * The BigDecimal scale of the returned value is setScale(2, RoundingMode.HALF_UP);
+	 * @param subAccountId
+	 * @return BigDecimal balance of account.
+	 * @author Law Barstow  - 10/5/2012
+	 */
+	@Override
+	public BigDecimal getBalance(int accountSubId) throws SQLException, Exception {
+		BigDecimal balance;
+		List<Map<String, Object>> oResults = null;
+		try {
+			Connection connection = DataUtils.connect();
+			String balanceQuery = "SELECT AvailableBalance from accountsub "
+					+ "where accountsubid = " + accountSubId;
+			
+			oResults = DataUtils.selectData(balanceQuery, connection);
+			
+			balance = new BigDecimal(oResults.get(0).get("AvailableBalance").toString());
+			balance.setScale(2, RoundingMode.HALF_UP);
+			
+			connection.close();
+		} catch (Exception e){
+			e.printStackTrace();
+			balance = new BigDecimal(0.0);
+		}
+		
+		return balance;
+	}
+	
+	public List <Map<String, Object>> getAccountSubs(String cardNumber) throws SQLException, Exception {
+		BigDecimal balance;
+		
+		List<Map<String, Object>> oResults = null;
+		
+		try {
+			Connection connection = DataUtils.connect();
+			
+			String accountsubsQuery = "SELECT * from accountsub "
+					+ "where AccountId = '" + cardNumber + "')";
+			
+			oResults = DataUtils.selectData(accountsubsQuery, connection);
+			connection.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return oResults;
+	}
+	
+	/**
+	 * 
+	 * @param account
+	 * @param depositAmount
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	
+	public BigDecimal makeDeposit(int subAccountId, BigDecimal depositAmount) throws SQLException, Exception {
+		BigDecimal newBalance = new BigDecimal(0);
+		BigDecimal currentBalance = new BigDecimal(0);
+		
+		try {
+			currentBalance = getBalance(subAccountId);
+			newBalance = currentBalance.add(depositAmount);
+			
+			Connection connection = DataUtils.connect();
+			
+			String DepositQuery = "UPDATE accountsub "
+			+ " SET AvailableBalance = " + newBalance
+			+ " WHERE accountSubId = " + subAccountId;
+			
+			int rowsAffected = DataUtils.processStatement(DepositQuery, connection, false);
+			
+			if (rowsAffected != 1) {
+				connection.rollback();
+				throw new Exception("Something went wrong with making a deposit with account: " + subAccountId);
+			}
+			connection.commit();
+			connection.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			newBalance = currentBalance;
+		}
+		
+		return newBalance;
+	}
+	
+	/**
+	 * @TODO handle withdrawal limits and overdraft fees
+	 * @param account
+	 * @param withdrawalAmount
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public BigDecimal makeWithdrawal(int subAccountId, BigDecimal withdrawalAmount) throws SQLException, Exception {
+		
+		BigDecimal currentBalance = new BigDecimal(0);
+		BigDecimal newBalance = new BigDecimal(0);
+
+		try {
+			currentBalance = getBalance(subAccountId);
+			newBalance = currentBalance.subtract(withdrawalAmount);
+			
+			Connection connection = DataUtils.connect();
+			
+			String withdrawalQuery = "UPDATE accountsub "
+			+ " SET AvailableBalance = " + newBalance
+			+ " WHERE accountSubId = " + subAccountId;
+			
+			int rowsAffected = DataUtils.processStatement(withdrawalQuery, connection, false);
+			
+			if(rowsAffected != 1) {
+				connection.rollback();
+				throw new Exception("Something went wrong with making a withdrawal with subaccount: " + subAccountId);
+			}
+			connection.commit();
+			connection.close();
+			
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			newBalance = currentBalance;
+		}
+		
+		return newBalance;
+	}
+
+	@Override
+	public Boolean createAccount(Account account) throws SQLException,
+			Exception {
+		Integer accountId = 0;
+
+		try {
+			Connection connection = DataUtils.connect();
+
+			// use the customer object getters to build the query
+			// p.s. you may want to use stringbuilder
+			
+			String createAccount = "INSERT INTO `ATMDB`.`account` (`AccountId`, `CardNumber`, `PrimaryCustomerId`, `PinNumber`, `FailedAttempts`, `AccountLocked`) "
+					+ "VALUES (NULL, '"+account.getAccountNumber()+"', '"+account.getCustomerId()+"', '"+ account.getPinNumber() +"', '0', '0');";
+			accountId = DataUtils.processStatementGetId(createAccount,connection, false);// autocommit? thats scary
+            connection.commit();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			accountId = 0;
+		}
+
+		// should return the accountId of the new customer;
+		return (accountId > 0);
+	}
+	
+	public Boolean updateAccount(Account account) throws SQLException, Exception{
+		Boolean updateSuccess = false;
+		
+		try{
+			Connection connection = DataUtils.connect();
+			String updateAccount = "UPDATE account "
+					+ "SET CardNumber = '" + account.getAccountNumber()
+					+ "' , PrimaryCustomerId = '" + account.getCustomerId
+					+ "' , PinNumber = '" + account.getPinNumber()
+					+ "' WHERE AccountId = '" + account.getAccountId() + "';";
+			
+			int rowsAffected = DataUtils.processStatement(updateCustomer,connection, false);
+			
+			if (rowsAffected == 1) {
+				updateSuccess = true;
+			} else {
+				updateSuccess = false;
+				connection.rollback();
+			}
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			updateSuccess = false;
+		}
+		
+		return updateSuccess;
+	}
+	
+		/**
+	 * @param Calendar transactionDate
+	 * @param BigDecimal amount
+	 * @param byte transacionType
+	 * @param byte fundType
+	 * @param BigDecimal startingBalance
+	 * @param BigDecimal endingBalance
+	 * @throws SQLException, Exception
+	 * @author Law 
+	 */
+	public void insertTransaction (int accountSubId, Calendar transactionDate, BigDecimal amount, byte transactionType, byte fundType,
+			BigDecimal startingBalance, BigDecimal endingBalance) throws SQLException, Exception
+		{
+		try {
+			Connection connection = DataUtils.connect();
+			String insertTransactionSQL ="Insert into transaction (accountSubId, transactiondate, amount, transactionType,"
+					+ "fundtype, startingBalance, endingBalance) values ( " + Integer.toString(accountSubId) + ", '" +
+					transactionDate.toString() +"', " +amount.toString() + ", " + Byte.toString(transactionType) +
+					", "+ Byte.toString(fundType) + ", " + startingBalance.toString() +  " , " + endingBalance.toString()
+					+ " ) ";
+			
+			int results = DataUtils.processStatement(insertTransactionSQL, connection, true);
+			if (results == 1){
+				connection.commit();
+			} else {
+				connection.rollback();
+			}
+			connection.close();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+
+	
+}

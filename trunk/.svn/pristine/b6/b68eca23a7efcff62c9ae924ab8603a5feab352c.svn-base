@@ -1,0 +1,11 @@
+package atm.business.api.services;
+
+import java.math.BigDecimal;
+
+import atm.business.api.model.BankUser;
+
+public interface AccountService {
+
+	BigDecimal getUserBalance(BankUser user) throws BankServiceException;
+
+}

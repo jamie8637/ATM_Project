@@ -1,0 +1,161 @@
+package com.presentation.service;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.UnknownHostException;
+import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
+import atm.business.api.model.BankUser;
+import atm.business.api.services.AccountService;
+import atm.business.api.services.AuthenticationException;
+import atm.business.api.services.AuthenticationService;
+import atm.business.api.services.BankServiceException;
+import fromBusinesTeam.JAXBContextFactory;
+import fromBusinesTeam.StubFactory;
+import fromBusinesTeam.TcpClient;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BankSystemService.
+ */
+public class BankSystemService {
+
+	private static StubFactory stubFactory;
+	private static TcpClient tcpClient;
+
+	/**
+	 * Connect.
+	 * 
+	 * @return true, if successful
+	 * @throws JAXBException
+	 * @throws IOException
+	 * @throws UnknownHostException
+	 */
+	public static boolean connect() throws JAXBException, UnknownHostException,
+			IOException {
+		JAXBContext jaxb = JAXBContextFactory.createContext();
+		tcpClient = new TcpClient("comm.staging.brokerlogic.com", 4242);
+		stubFactory = new StubFactory(tcpClient, jaxb.createMarshaller(),
+				jaxb.createUnmarshaller());
+		return true;
+	}
+
+	/**
+	 * Disconnect.
+	 * 
+	 * @return true, if successful
+	 */
+	public static void disconnect() {
+		if (tcpClient != null)
+			tcpClient.disconnect();
+	}
+
+	/**
+	 * Determine if the connection already exists
+	 * 
+	 * @return
+	 */
+	public static boolean isClosed() {
+		if (tcpClient != null)
+			return tcpClient.isConnected();
+		else
+			return true;
+	}
+
+	/**
+	 * Validate user login.
+	 * 
+	 * @param user
+	 *            the user
+	 * @return true, if successful
+	 */
+	public static boolean validateUserLogin(BankUser user) {
+		boolean result;
+		
+		if (!isClosed()) {
+			AuthenticationService service = stubFactory
+					.createStub(AuthenticationService.class);
+			try {
+				result = service.authenticate(user.getCardNumber(),
+						user.getPin());
+			} catch (AuthenticationException e) {
+				result = false;
+			}
+		} else {
+			result = false;
+		}
+		
+		return result;
+	}
+
+	/**
+	 * Gets the balanace.
+	 * 
+	 * @return the balanace
+	 * @throws BankServiceException 
+	 * this method is useless
+	 */
+	public static BigDecimal getBalanace(BankUser user) throws BankServiceException {
+			
+		if(!isClosed()) {
+			AccountService service = stubFactory.createStub(AccountService.class);
+			return service.getUserBalance(user);
+		} else {
+			throw new BankServiceException("Not connected to the database");
+		}
+	}
+	
+	public static void makeDeposit(BankUser user, BigDecimal amount) throws BankServiceException {
+		
+		if(!isClosed()) {
+			AccountService service = stubFactory.createStub(AccountService.class);
+			service.makeDeposit(user, amount);
+		} else {
+			throw new BankServiceException("Not connected to the database");
+		}
+	}
+	
+	public static void makeWithdrawl(BankUser user, BigDecimal amount) throws BankServiceException {
+		
+		if(!isClosed()) {
+			AccountService service = stubFactory.createStub(AccountService.class);
+			try {
+				service.makeWithdrawl(user, amount);
+			} catch (Exception ex) {
+				if(ex.getMessage().contains("This withdrawl would put the account in a negative balance")) {
+					throw new BankServiceException("No Funds Available");
+				}
+			}
+		} else {
+			throw new BankServiceException("Not connected to the database");
+		}
+	}
+	
+	public static BigDecimal getAccountsubBalance(int accountsubId) throws BankServiceException {
+		
+		if(!isClosed()) {
+			AccountService service = stubFactory.createStub(AccountService.class);
+			return service.getAccountsubBalance(accountsubId);
+		} else {
+			throw new BankServiceException("Not connected to the database");
+		}
+	}
+	
+	public static List getAccountsubs(long cardNumber) throws BankServiceException {
+		
+		if(!isClosed()) {
+			AccountService service = stubFactory.createStub(AccountService.class);
+			return service.getAccountsubs(cardNumber);
+		} else {
+			throw new BankServiceException("Not connected to the database");
+		}
+	}
+	
+	/**
+	 * Finish Defining Once data model becomes more clear withdrawFunds()
+	 * depositFunds() checkBalance()
+	 */
+}

@@ -1,0 +1,25 @@
+/**
+ * Class to handle code for Deposit transactions
+ */
+public class Deposit {
+	public static void displayDepositMenu() {
+		ATMmain.printHeader();
+		System.out.printf("%21s %s%n", "", "DEPOSIT");
+		System.out.println();
+		System.out.printf("%45s%n", "{{This is where the deposit will go.}}");
+		System.out.println();
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Enter Selection and Press Enter: ");
+		processDepositSelection(ATMmain.sc.nextInt());
+	}
+	
+	private static void processDepositSelection(int selected) {
+		switch(selected){
+		default:
+			//displayMainMenu();
+			break;
+		}
+		
+	}
+}

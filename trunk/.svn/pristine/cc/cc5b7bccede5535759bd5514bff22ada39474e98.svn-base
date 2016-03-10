@@ -1,0 +1,42 @@
+/**
+ * Class to handle code for Main Menu options
+ */
+public class MainMenu {
+
+	/**
+	 * Display main menu.
+	 * @return 
+	 */
+	public static int displayMainMenu() {
+		// Displays main menu after successful login
+		ATMmain.printHeader();
+		System.out.printf("%31s%n", "Main Menu");
+		System.out.println();
+		System.out.printf("%30s\tPress 1\n", "View Account Balance");
+		System.out.printf("%30s\tPress 2\n", "Withdraw Funds");
+		System.out.printf("%30s\tPress 3\n", "Deposit Funds");
+		System.out.printf("%30s\tPress 0\n", "Logout of ATM");
+		System.out.println();
+		System.out.print("Enter Selection and Press Enter: ");
+		return(ATMmain.sc.nextInt());
+		//processMainMenuSelection(ATMmain.sc.nextInt());
+	}
+	
+	public static void processMainMenuSelection(int selected) {
+		switch(selected){
+		case 0:
+			ATMmain.setUser(null);
+			break;
+		case 1:
+			Balance.displayAccountBalance(1);
+			break;
+		case 2:
+			Withdrawal.displayWithdrawMenu();
+			break;
+		case 3:
+			Deposit.displayDepositMenu();
+			break;
+		}
+	}
+	
+}

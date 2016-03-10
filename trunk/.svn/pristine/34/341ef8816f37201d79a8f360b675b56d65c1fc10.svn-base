@@ -1,0 +1,74 @@
+package atm;
+
+import java.math.BigDecimal;
+
+import com.presentation.service.BankSystemService;
+
+import atm.business.api.model.Account;
+import atm.business.api.services.BankServiceException;
+
+/**
+ * Class to handle code for Withdrawal transactions
+ */
+public class Withdrawal {
+	Account account;
+	static BigDecimal entry;
+	
+	public static void displayWithdrawMenu() {
+		ATMmain.printHeader();
+		System.out.printf("%21s %s%n", "", "WITHDRAWAL");
+		System.out.println();
+		System.out.printf("%47s%n", "Enter Amount to Withdraw or 0 to Cancel");
+		System.out.println();
+		//System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Type Selection and Press Enter: ");
+		processWithdrawalSelection(ATMmain.sc.nextBigDecimal());
+	}
+
+	public static void displayWithdrawalConfirmation() {
+		ATMmain.printHeader();
+		System.out.printf("%15s %s%n", "", "WITHDRAWAL COMPLETE");
+		System.out.println();
+		System.out.printf("%40s%n", ATMmain.formatMoney.format(entry) + " is being dispensed.");
+		System.out.println();
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Type Selection and Press Enter: ");
+		processWithdrawalSelection(ATMmain.sc.nextBigDecimal());
+	}
+	
+	public static void displayWithdrawalError(String message) {
+		ATMmain.printHeader();
+		System.out.printf("%15s $s%n","", "WITHDRAWAL ERROR");
+		System.out.println();
+		System.out.printf("%40s%n", message);
+		System.out.println();
+		System.out.printf("%30s\tPress 0\n", "Return to Main Menu");
+		System.out.println();
+		System.out.print("Type Selection and Press Enter: ");
+		processWithdrawalSelection(ATMmain.sc.nextBigDecimal());
+	}
+	
+	private static void processWithdrawalSelection(BigDecimal bigDecimal) {
+		entry = bigDecimal;
+		if(entry.compareTo(BigDecimal.ZERO) == 0){
+			//Cancel withdrawal and return to main menu
+		} else {
+			//WITHDRAW FUNDS
+			try {
+				BankSystemService.makeWithdrawl(ATMmain.getUser(), entry);
+				displayWithdrawalConfirmation();
+			} catch (BankServiceException bse) {
+				// TODO Auto-generated catch block
+				bse.printStackTrace();
+				displayWithdrawalError(bse.getMessage());
+			} catch (Exception ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+				displayWithdrawalError(ex.getMessage());
+			}
+		}
+		
+	}	
+}

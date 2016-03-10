@@ -1,0 +1,78 @@
+package data;
+
+
+
+/**
+ * QueryDataTest.java Tests the QueryData class
+ * 
+ * @author Database Layer Team
+ * @date 9/10/2013
+ */
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Connection;
+
+import org.junit.Test;
+
+public class RepositoryTest {
+
+	@Test
+	public void authenticateTest() {
+		try {
+			// check the method with correct card number and pin number
+			assertEquals("authenticate method failed", true, Repository
+					.getInstance().authenticate("1234123412341234", "12345"));
+			
+			// test the method with incorrect card number and pin number
+			//assertEquals("authenticate method failed", false, Repository
+			//		.getInstance().authenticate("9998887776661234", "8920"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testSelectAllCustomerNames() {
+		try {		
+			// make sure there is at least 1 record in there or this will fail.
+			Connection connection = DataUtils.connect();
+			
+			try {
+				
+				String xml = Repository.getInstance().selectAllCustomerNames();
+				
+				// Test the output in the console window
+				System.out.println(xml);
+				
+				// Test to make sure it got a record
+				assertTrue("No records in the table", xml.indexOf("root") > -1);
+			}
+			finally {
+				// Don't store the saved record.
+				DataUtils.rollback(connection);
+				connection.close();
+				
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testGetBalance(){
+		try{
+			BigDecimal testBalance = new BigDecimal(100.00).setScale(2,  RoundingMode.HALF_UP);
+			assertEquals("Balance for AccountSubId 1 is 100.00", Repository.getInstance().getBalance(1),testBalance);
+			
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+}

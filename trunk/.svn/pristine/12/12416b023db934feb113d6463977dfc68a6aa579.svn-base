@@ -1,0 +1,37 @@
+package atm;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+
+public class DepositPanel extends JPanel {
+	
+	private JButton jbtCheckings, jbtSavings;
+	
+	public DepositPanel() {
+		
+		// Add Buttons to Deposit Panel
+		add(jbtCheckings = new JButton("Checkings"));
+		add(jbtSavings = new JButton("Savings"));
+		
+		// Set the Layout of the Deposit Panel
+		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+		setLayout(boxLayout);
+		
+		jbtCheckings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Insert further options
+			}
+		});
+		
+		jbtSavings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Insert further options
+			}
+		});
+	}
+}

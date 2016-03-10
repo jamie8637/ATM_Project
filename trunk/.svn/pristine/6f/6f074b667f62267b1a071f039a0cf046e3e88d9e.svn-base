@@ -1,0 +1,120 @@
+package atm.business.server.services;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import atm.business.api.model.Account;
+import atm.business.api.model.BankUser;
+import atm.business.api.services.AccountService;
+import atm.business.api.services.BankServiceException;
+import data.AccountDAO;
+
+public class AccountServiceImpl implements AccountService{
+	
+	private AccountDAO accountDao;
+	private Logger logger = Logger.getLogger(AccountServiceImpl.class);
+
+	public AccountDAO getAccountDao() {
+		return accountDao;
+	}
+
+	public void setAccountDao(AccountDAO accountDao) {
+		this.accountDao = accountDao;
+	}
+	
+	@Override
+	public BigDecimal getUserBalance(BankUser user) throws BankServiceException {
+		try {
+			long subAccountId = Long.valueOf(user.getCardNumber());
+			return accountDao.getBalance(subAccountId);
+		} catch (SQLException e) {
+			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (NumberFormatException e) {
+			throw new BankServiceException("Unable to convert card number to account ID");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+	
+	@Override
+	public void makeDeposit(BankUser user, BigDecimal amount) throws BankServiceException {
+		try {
+			long subAccountId = Long.valueOf(user.getCardNumber());
+			accountDao.makeDeposit(subAccountId, amount);
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (NumberFormatException e) {
+			throw new BankServiceException("Unable to convert card number to account ID");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+	
+	@Override
+	public void makeWithdrawl(BankUser user, BigDecimal amount) throws BankServiceException {
+		try {
+			long subAccountId = Long.valueOf(user.getCardNumber());
+			accountDao.makeWithdrawal(subAccountId, amount);
+		} catch (SQLException e) {
+			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (NumberFormatException e) {
+			throw new BankServiceException("Unable to convert card number to account ID");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+
+
+
+
+	@Override
+	public List<Account> getAccountsubs(long cardNumber) throws BankServiceException {
+		// TODO Auto-generated method stub
+		try {
+			
+			
+			return accountDao.getAccountsubs(cardNumber);
+		} catch (SQLException e) {
+			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+
+	@Override
+	public BigDecimal getAccountsubBalance(int accountsubId) throws BankServiceException {
+		try {
+			//return accountDao.getAccountsubBalance(accountsubId);
+			return null;
+		//} catch (SQLException e) {
+//			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (NumberFormatException e) {
+			throw new BankServiceException("Unable to convert card number to account ID");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+
+	@Override
+	public Boolean createAccount(Account account) throws BankServiceException {
+		// TODO Auto-generated method stub
+		try {
+			return accountDao.createAccount(account);
+		} catch (SQLException e) {
+			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+
+}

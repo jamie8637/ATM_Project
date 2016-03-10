@@ -1,0 +1,42 @@
+package atm;
+
+import java.awt.BorderLayout;
+
+import javax.swing.*;
+
+public class MainMenu extends JFrame{
+	
+	private MenuPanel menuPanel;
+	private ResultsPanel resultsPanel;
+	private JButton jbtLogOut;
+	
+	public MainMenu() {
+		super("ATM");
+		setSize(600, 500);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		
+		
+		menuPanel = new MenuPanel();
+		resultsPanel = new ResultsPanel();
+				
+		
+		/**
+		 * JPanel to Hold Menu Options
+		 */
+		JPanel p2 = new JPanel(new BorderLayout());
+		p2.add(jbtLogOut = new JButton("Log Out"), BorderLayout.SOUTH);
+		p2.add(menuPanel, BorderLayout.CENTER);
+	
+		
+		/**
+		 * Add Contents to the Frame
+		 */
+		add(p2, BorderLayout.EAST);
+		add(resultsPanel, BorderLayout.CENTER);
+	
+		
+		
+		
+	}
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+
+    <title>Welcome to ATM Banking</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/signin.css" rel="stylesheet">
+  
+ </head>
+ <body>
+ <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="LoginSuccess.jsp" role="button">Online Banking System</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="LoginSuccess.jsp">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          </div>
+          </div>
+          </div>
+          
+ <div class="container" style="text-align: center; margin-top: 100px;">
+ <p>
+ <img src="images/ucf.png" style="width: 200px;"/>
+ </p>
+ </div>
+  <div class="container">
+      <form class="form-signin" method="POST" action="Login.do">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" class="form-control" placeholder="Card Number" name="cardnumber" required autofocus>
+        <input type="password" class="form-control" placeholder="Password" name="pin" required>
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <input class="btn btn-lg btn-primary btn-block" type="submit" Value="Sign In"/>
+      </form>
+
+    </div> <!-- /container -->
+ <!--<div style="margin-left:auto; margin-right:auto; width:200px">
+  <form method="POST" action="Login.do">
+   <p style="margin-bottom:0px; padding-bottom:0px">Card number</p>
+   <input type="text" name="cardnumber">
+   <p style="margin-bottom:0px; padding-bottom:0px">PIN</p>
+   <input type="password" name="pin"><br>
+   <input type="submit" value="Logon">
+  </form>
+ </div>-->
+ 
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+   <script src="javascript/bootstrap.min.js"></script>
+ </body>
+</html>

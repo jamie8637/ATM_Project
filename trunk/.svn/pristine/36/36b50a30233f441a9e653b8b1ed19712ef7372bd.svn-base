@@ -1,0 +1,72 @@
+package communications.client;
+
+import java.io.StringReader;
+import java.io.StringWriter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import org.apache.log4j.Logger;
+import communications.Session;
+
+/**
+ * This class interfaces with the server-side of the banking system. It attempts to communicate via TCP to the ATM subsystem.
+ * @author Adrian Rhodd
+ */
+public class BankClient extends Session{
+	
+	private JAXBContext jaxbContext;
+	private Marshaller beanMarshaller;
+	private Unmarshaller beanUnmarshaller;
+	static Logger logger = Logger.getLogger("org.apache.log4j.PatternLayout");
+	
+	
+	public BankClient(int TCPport){
+		super(TCPport);
+		
+		try {
+			jaxbContext = JAXBContext.newInstance(TransactionMessageBean.class);
+			beanMarshaller = jaxbContext.createMarshaller();
+			beanUnmarshaller = jaxbContext.createUnmarshaller();
+		} catch (JAXBException e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * This method will read in from the InputStream and do the XML -> Java conversion.
+	 * @return TransactionMessageBean
+	 * @see TransactionMessageBean
+	 */
+	public TransactionMessageBean getRequest(){
+		String msgIn = super.read();
+		TransactionMessageBean request = null;
+		try {
+				request = (TransactionMessageBean) beanUnmarshaller.unmarshal(new StringReader(msgIn));
+		} catch (JAXBException e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return request;
+	}
+	
+	/**
+	 * This method will do the Java -> XML conversion and write to the OutputStream.
+	 * @param response TransactionMessageBean
+	 * @see TransactionMessageBean
+	 */
+	
+	public void sendResponse(TransactionMessageBean response){
+		StringWriter msgOut = new StringWriter();
+		
+		try {
+			beanMarshaller.marshal(response, msgOut);
+			super.write(msgOut.toString());
+		} catch (JAXBException e) {
+			logger.error(e.getMessage());
+			System.err.println(e);
+		}
+	}		
+}

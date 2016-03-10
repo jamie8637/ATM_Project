@@ -1,0 +1,42 @@
+package atm.business.server.services;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
+
+import atm.business.api.model.BankUser;
+import atm.business.api.services.AccountService;
+import atm.business.api.services.BankServiceException;
+import data.AccountDAO;
+
+public class AccountServiceImpl implements AccountService{
+	
+	private AccountDAO accountDao;
+	private Logger logger = Logger.getLogger(AccountServiceImpl.class);
+
+	@Override
+	public BigDecimal getUserBalance(BankUser user) throws BankServiceException {
+		// TODO Auto-generated method stub
+		try {
+			long subAccountId = Long.valueOf(user.getCardNumber());
+			return accountDao.getBalance(subAccountId);
+		} catch (SQLException e) {
+			throw new BankServiceException("SQL Exception Occurred " + e.getMessage());
+		} catch (NumberFormatException e) {
+			throw new BankServiceException("Unable to convert card number to account ID");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new BankServiceException("An Unknown Exception Occurred " + e.getMessage());
+		} 
+	}
+
+	public AccountDAO getAccountDao() {
+		return accountDao;
+	}
+
+	public void setAccountDao(AccountDAO accountDao) {
+		this.accountDao = accountDao;
+	}
+
+}

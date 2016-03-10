@@ -1,0 +1,19 @@
+package atm;
+
+import javax.swing.SwingUtilities;
+
+
+public class App {
+
+	/**
+	 * Start the MainMenu
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				new MainMenu();
+			}
+		});
+	}
+}

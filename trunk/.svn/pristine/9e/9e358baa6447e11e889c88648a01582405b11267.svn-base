@@ -1,0 +1,97 @@
+package data;
+
+/**
+ * AccountDAOTest.java contains the Unit tests for the make deposit and make withdrawal methods. 
+ * @author Database Layer Team
+ * @date 10/28/13
+ */
+
+import static org.junit.Assert.*;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import org.junit.Test;
+
+import main.java.data.AccountDAO;
+import main.java.data.AccountRepository;
+
+public class AccountDAOTest {
+	/*
+
+	public static void main(String[] args) throws Exception{
+		
+		
+	}
+	//Deposit Test
+	
+	@Test
+	public void testMakeDepositLongBigDecimal() {
+
+		TestUtils.configureTestDatabase();
+		
+		AccountDAO accountDAO = AccountRepository.getInstance();
+		
+			try{
+				long acct;
+				acct =1234123412341234L;
+				BigDecimal balanceBefore;
+				// Balance Before
+				balanceBefore = accountDAO.getBalance(acct);
+				System.out.printf("\n\nDeposit Test:\n");
+				System.out.printf("\nBalance before is: " + balanceBefore);
+				//amount to deposit
+				BigDecimal testDeposit = new BigDecimal(0.01).setScale(2,  RoundingMode.HALF_UP);
+				//add the testDeposit amount to the before balance
+				BigDecimal balanceAfter = balanceBefore.add(testDeposit);
+				
+				System.out.printf("\nBalance for AccountSubId should be: " + balanceAfter);
+				//make the deposit
+				accountDAO.makeDeposit(acct, testDeposit);
+				System.out.printf("\nBalance after is: " + balanceAfter);
+				//verify
+				assertEquals("Balance for AccountSubId should be: " + balanceAfter.toString(), 
+						accountDAO.getBalance(acct), balanceAfter);
+			
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		
+	}
+	
+	//Withdrawal Test
+	@Test
+	public void testMakeWithdrawalLongBigDecimal() {
+	
+		TestUtils.configureTestDatabase();
+		AccountDAO accountDAO = AccountRepository.getInstance();
+		
+		
+			try{
+				long acct;
+				acct =1234123412341234L;
+				BigDecimal balanceBefore;
+				// Balance Before
+				balanceBefore = accountDAO.getBalance(acct);
+				System.out.printf("\nWithdrawal Test:\n");
+				System.out.printf("\nBalance before is: "+ balanceBefore);
+				//amount to withdraw
+				BigDecimal testWithdrawal = new BigDecimal(0.01).setScale(2,  RoundingMode.HALF_UP);
+				//subtract the testWithdrawal amount from the before balance
+				BigDecimal balanceAfter = balanceBefore.subtract(testWithdrawal);
+				
+				System.out.println("\nBalance for AccountSubId should be: " + balanceAfter);
+				//make the withdrawal
+				accountDAO.makeWithdrawal(acct, testWithdrawal);
+				System.out.printf("\nBalance after is: " + balanceAfter);
+				//verify
+				assertEquals("Balance for AccountSubId should be: " + balanceAfter.toString(), 
+						accountDAO.getBalance(acct), balanceAfter);
+			
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		
+	} 
+*/
+}

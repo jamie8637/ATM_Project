@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_ssQUIBwhEeOPSNu4unKklA" name="ATM">
+  <packageImport xmi:id="_ssQUIRwhEeOPSNu4unKklA">
+    <importedPackage href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#/"/>
+  </packageImport>
+  <packageImport xmi:id="_ssQUIhwhEeOPSNu4unKklA">
+    <importedPackage href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#/"/>
+  </packageImport>
+  <packagedElement xsi:type="uml:Association" xmi:id="_ssQUIxwhEeOPSNu4unKklA" name="BankUser_Account" memberEnd="_ssQUJBwhEeOPSNu4unKklA _ssQUJxwhEeOPSNu4unKklA" navigableOwnedEnd="_ssQUJBwhEeOPSNu4unKklA _ssQUJxwhEeOPSNu4unKklA">
+    <ownedEnd xmi:id="_ssQUJBwhEeOPSNu4unKklA" name="account" type="_ssQUdhwhEeOPSNu4unKklA" aggregation="composite" association="_ssQUIxwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQUJRwhEeOPSNu4unKklA" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUJhwhEeOPSNu4unKklA"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_ssQUJxwhEeOPSNu4unKklA" name="bankUser" type="_ssQUWxwhEeOPSNu4unKklA" association="_ssQUIxwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQUKBwhEeOPSNu4unKklA" value="*"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUKRwhEeOPSNu4unKklA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_ssQUKhwhEeOPSNu4unKklA" name="Account_AccountManager" memberEnd="_ssQUKxwhEeOPSNu4unKklA _ssQULhwhEeOPSNu4unKklA" navigableOwnedEnd="_ssQUKxwhEeOPSNu4unKklA _ssQULhwhEeOPSNu4unKklA">
+    <ownedEnd xmi:id="_ssQUKxwhEeOPSNu4unKklA" name="accountManager" type="_ssQUiRwhEeOPSNu4unKklA" association="_ssQUKhwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQULBwhEeOPSNu4unKklA" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQULRwhEeOPSNu4unKklA"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_ssQULhwhEeOPSNu4unKklA" name="account" type="_ssQUdhwhEeOPSNu4unKklA" association="_ssQUKhwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQULxwhEeOPSNu4unKklA" value="*"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUMBwhEeOPSNu4unKklA"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_ssQUMRwhEeOPSNu4unKklA" name="LoginAttempt_BankUser" memberEnd="_ssQUMhwhEeOPSNu4unKklA _ssQUNRwhEeOPSNu4unKklA" navigableOwnedEnd="_ssQUMhwhEeOPSNu4unKklA _ssQUNRwhEeOPSNu4unKklA">
+    <ownedEnd xmi:id="_ssQUMhwhEeOPSNu4unKklA" name="bankUser" type="_ssQUWxwhEeOPSNu4unKklA" association="_ssQUMRwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQUMxwhEeOPSNu4unKklA" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUNBwhEeOPSNu4unKklA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_ssQUNRwhEeOPSNu4unKklA" name="loginAttempt" type="_ssQUaRwhEeOPSNu4unKklA" association="_ssQUMRwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQUNhwhEeOPSNu4unKklA" value="*"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUNxwhEeOPSNu4unKklA"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_ssQUOBwhEeOPSNu4unKklA" name="Session_BankUser" memberEnd="_ssQUORwhEeOPSNu4unKklA _ssQUPBwhEeOPSNu4unKklA" navigableOwnedEnd="_ssQUORwhEeOPSNu4unKklA _ssQUPBwhEeOPSNu4unKklA">
+    <ownedEnd xmi:id="_ssQUORwhEeOPSNu4unKklA" name="bankUser" type="_ssQUWxwhEeOPSNu4unKklA" association="_ssQUOBwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQUOhwhEeOPSNu4unKklA" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUOxwhEeOPSNu4unKklA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_ssQUPBwhEeOPSNu4unKklA" name="session" type="_ssQUSBwhEeOPSNu4unKklA" association="_ssQUOBwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQUPRwhEeOPSNu4unKklA" value="*"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUPhwhEeOPSNu4unKklA"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_ssQUPxwhEeOPSNu4unKklA" name="Account_Transaction" memberEnd="_ssQUQBwhEeOPSNu4unKklA _ssQUQxwhEeOPSNu4unKklA" navigableOwnedEnd="_ssQUQBwhEeOPSNu4unKklA _ssQUQxwhEeOPSNu4unKklA">
+    <ownedEnd xmi:id="_ssQUQBwhEeOPSNu4unKklA" name="transaction" type="_ssQUmRwhEeOPSNu4unKklA" association="_ssQUPxwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQUQRwhEeOPSNu4unKklA" value="*"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUQhwhEeOPSNu4unKklA"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_ssQUQxwhEeOPSNu4unKklA" name="account" type="_ssQUdhwhEeOPSNu4unKklA" association="_ssQUPxwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQURBwhEeOPSNu4unKklA" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQURRwhEeOPSNu4unKklA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Package" xmi:id="_ssQURhwhEeOPSNu4unKklA" name="atm">
+    <packagedElement xsi:type="uml:Package" xmi:id="_ssQURxwhEeOPSNu4unKklA" name="model">
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUSBwhEeOPSNu4unKklA" name="Session">
+        <ownedAttribute xmi:id="_ssQUSRwhEeOPSNu4unKklA" name="sessionId">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssQUShwhEeOPSNu4unKklA" name="lastActive">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#//Date"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_ssQUSxwhEeOPSNu4unKklA" name="getSessionId">
+          <ownedParameter xmi:id="_ssQUTBwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUTRwhEeOPSNu4unKklA" name="setSessionId">
+          <ownedParameter xmi:id="_ssQUThwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUTxwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUUBwhEeOPSNu4unKklA" name="setLastActive">
+          <ownedParameter xmi:id="_ssQUURwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUUhwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#//Date"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUUxwhEeOPSNu4unKklA" name="getLastActive">
+          <ownedParameter xmi:id="_ssQUVBwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#//Date"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUVRwhEeOPSNu4unKklA" name="isExpired">
+          <ownedParameter xmi:id="_ssQUVhwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUVxwhEeOPSNu4unKklA" name="Maintainer">
+        <generalization xmi:id="_ssQUWBwhEeOPSNu4unKklA" general="_ssQUWxwhEeOPSNu4unKklA"/>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUWRwhEeOPSNu4unKklA" name="Customer">
+        <generalization xmi:id="_ssQUWhwhEeOPSNu4unKklA" general="_ssQUWxwhEeOPSNu4unKklA"/>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUWxwhEeOPSNu4unKklA" name="BankUser">
+        <ownedAttribute xmi:id="_ssQUXBwhEeOPSNu4unKklA" name="cardNumber">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssQUXRwhEeOPSNu4unKklA" name="pin">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssQUXhwhEeOPSNu4unKklA" name="locked">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_ssQUXxwhEeOPSNu4unKklA" name="getCardNumber">
+          <ownedParameter xmi:id="_ssQUYBwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUYRwhEeOPSNu4unKklA" name="setCardNumber">
+          <ownedParameter xmi:id="_ssQUYhwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUYxwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUZBwhEeOPSNu4unKklA" name="getPin">
+          <ownedParameter xmi:id="_ssQUZRwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUZhwhEeOPSNu4unKklA" name="setPin">
+          <ownedParameter xmi:id="_ssQUZxwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUaBwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUaRwhEeOPSNu4unKklA" name="AuthenticationAttempt">
+        <ownedAttribute xmi:id="_ssQUahwhEeOPSNu4unKklA" name="successful">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssQUaxwhEeOPSNu4unKklA" name="timestamp">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#//Date"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_ssQUbBwhEeOPSNu4unKklA" name="isSuccessful">
+          <ownedParameter xmi:id="_ssQUbRwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUbhwhEeOPSNu4unKklA" name="setSuccessful">
+          <ownedParameter xmi:id="_ssQUbxwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUcBwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUcRwhEeOPSNu4unKklA" name="getTimestamp">
+          <ownedParameter xmi:id="_ssQUchwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#//Date"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUcxwhEeOPSNu4unKklA" name="setTimestamp">
+          <ownedParameter xmi:id="_ssQUdBwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUdRwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#//Date"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUdhwhEeOPSNu4unKklA" name="Account">
+        <ownedAttribute xmi:id="_ssQUdxwhEeOPSNu4unKklA" name="accountNumber">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssQUeBwhEeOPSNu4unKklA" name="availableBalance">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//UnlimitedNatural"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssQUeRwhEeOPSNu4unKklA" name="pendingBalance">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_ssQUehwhEeOPSNu4unKklA" name="getAccountNumber">
+          <ownedParameter xmi:id="_ssQUexwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUfBwhEeOPSNu4unKklA" name="setAccountNumber">
+          <ownedParameter xmi:id="_ssQUfRwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUfhwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUfxwhEeOPSNu4unKklA" name="getAvailableBalance">
+          <ownedParameter xmi:id="_ssQUgBwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//UnlimitedNatural"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUgRwhEeOPSNu4unKklA" name="setAvailableBalance">
+          <ownedParameter xmi:id="_ssQUghwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUgxwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//UnlimitedNatural"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUhBwhEeOPSNu4unKklA" name="getPendingBalance">
+          <ownedParameter xmi:id="_ssQUhRwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//UnlimitedNatural"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUhhwhEeOPSNu4unKklA" name="setPendingBalance">
+          <ownedParameter xmi:id="_ssQUhxwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUiBwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//UnlimitedNatural"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUiRwhEeOPSNu4unKklA" name="AccountManager"/>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUihwhEeOPSNu4unKklA" name="Deposit">
+        <generalization xmi:id="_ssQUixwhEeOPSNu4unKklA" general="_ssQUmRwhEeOPSNu4unKklA"/>
+        <ownedAttribute xmi:id="_ssQUjBwhEeOPSNu4unKklA" name="amount">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//UnlimitedNatural"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssQUjRwhEeOPSNu4unKklA" name="pending">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssQUjhwhEeOPSNu4unKklA" name="amountCleared">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//UnlimitedNatural"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_ssQUjxwhEeOPSNu4unKklA" name="setPending">
+          <ownedParameter xmi:id="_ssQUkBwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUkRwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUkhwhEeOPSNu4unKklA" name="isPending">
+          <ownedParameter xmi:id="_ssQUkxwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUlBwhEeOPSNu4unKklA" name="BalanceCheck">
+        <generalization xmi:id="_ssQUlRwhEeOPSNu4unKklA" general="_ssQUmRwhEeOPSNu4unKklA"/>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUlhwhEeOPSNu4unKklA" name="Withdrawal">
+        <generalization xmi:id="_ssQUlxwhEeOPSNu4unKklA" general="_ssQUmRwhEeOPSNu4unKklA"/>
+        <ownedAttribute xmi:id="_ssQUmBwhEeOPSNu4unKklA" name="amount">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUmRwhEeOPSNu4unKklA" name="Transaction">
+        <ownedAttribute xmi:id="_ssQUmhwhEeOPSNu4unKklA" name="transactionId">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssQUmxwhEeOPSNu4unKklA" name="timestamp">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#//Date"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_ssQUnBwhEeOPSNu4unKklA" name="getTransactionId">
+          <ownedParameter xmi:id="_ssQUnRwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUnhwhEeOPSNu4unKklA" name="setTransactionId">
+          <ownedParameter xmi:id="_ssQUnxwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUoBwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUoRwhEeOPSNu4unKklA" name="getTimestamp">
+          <ownedParameter xmi:id="_ssQUohwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#//Date"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ssQUoxwhEeOPSNu4unKklA" name="setTimestamp">
+          <ownedParameter xmi:id="_ssQUpBwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUpRwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#//Date"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="uml:Package" xmi:id="_ssQUphwhEeOPSNu4unKklA" name="services.api">
+      <ownedComment xmi:id="_ssQUpxwhEeOPSNu4unKklA" body="Interfaces in this package represent services in the application. &#xA;&#xA;There will likely be separate client and server implementations. The client side would have implementations that will call remote methods over TCP. The server side would have implementations that would actually interact with the database."/>
+      <ownedComment xmi:id="_ssQUqBwhEeOPSNu4unKklA" body="This exception should be thrown when a problem happens at the communication level." annotatedElement="_ssQUvBwhEeOPSNu4unKklA"/>
+      <packagedElement xsi:type="uml:Interface" xmi:id="_ssQUqRwhEeOPSNu4unKklA" name="AuthenticationService">
+        <ownedOperation xmi:id="_ssQUqhwhEeOPSNu4unKklA" name="authenticate">
+          <ownedComment xmi:id="_ssQUqxwhEeOPSNu4unKklA" body="&lt;div>Accepts a cardNumber and pin and attempts to create a session for the BankUser.&lt;/div>&lt;div>&lt;br>&lt;/div>Throws an AuthenticationException on failure."/>
+          <ownedParameter xmi:id="_ssQUrBwhEeOPSNu4unKklA" name="returnParameter" type="_ssQUSBwhEeOPSNu4unKklA" direction="return"/>
+          <ownedParameter xmi:id="_ssQUrRwhEeOPSNu4unKklA" name="parameter">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ssQUrhwhEeOPSNu4unKklA" name="parameter2">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUrxwhEeOPSNu4unKklA" name="AuthenticationException">
+        <ownedAttribute xmi:id="_ssQUsBwhEeOPSNu4unKklA" name="message">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_ssQUsRwhEeOPSNu4unKklA" name="getMessage">
+          <ownedParameter xmi:id="_ssQUshwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Interface" xmi:id="_ssQUsxwhEeOPSNu4unKklA" name="TransactionService">
+        <ownedOperation xmi:id="_ssQUtBwhEeOPSNu4unKklA" name="applyTransaction">
+          <ownedComment xmi:id="_ssQUtRwhEeOPSNu4unKklA" body="Throws a TransactionException with an appropriate message if the transaction cannot be applied."/>
+          <ownedParameter xmi:id="_ssQUthwhEeOPSNu4unKklA" name="returnParameter" direction="return"/>
+          <ownedParameter xmi:id="_ssQUtxwhEeOPSNu4unKklA" name="parameter" type="_ssQUmRwhEeOPSNu4unKklA"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUuBwhEeOPSNu4unKklA" name="TransactionException">
+        <ownedAttribute xmi:id="_ssQUuRwhEeOPSNu4unKklA" name="message">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_ssQUuhwhEeOPSNu4unKklA" name="getMessage">
+          <ownedParameter xmi:id="_ssQUuxwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xsi:type="uml:Class" xmi:id="_ssQUvBwhEeOPSNu4unKklA" name="CommunicationException">
+        <ownedAttribute xmi:id="_ssQUvRwhEeOPSNu4unKklA" name="message">
+          <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_ssQUvhwhEeOPSNu4unKklA" name="getMessage">
+          <ownedParameter xmi:id="_ssQUvxwhEeOPSNu4unKklA" name="returnParameter" direction="return">
+            <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_ssQUwBwhEeOPSNu4unKklA" name="Session_Transaction" memberEnd="_ssQUwRwhEeOPSNu4unKklA _ssQUxBwhEeOPSNu4unKklA" navigableOwnedEnd="_ssQUwRwhEeOPSNu4unKklA _ssQUxBwhEeOPSNu4unKklA">
+    <ownedEnd xmi:id="_ssQUwRwhEeOPSNu4unKklA" name="transaction" type="_ssQUmRwhEeOPSNu4unKklA" association="_ssQUwBwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQUwhwhEeOPSNu4unKklA" value="*"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUwxwhEeOPSNu4unKklA"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_ssQUxBwhEeOPSNu4unKklA" name="session" type="_ssQUSBwhEeOPSNu4unKklA" association="_ssQUwBwhEeOPSNu4unKklA">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ssQUxRwhEeOPSNu4unKklA" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ssQUxhwhEeOPSNu4unKklA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>

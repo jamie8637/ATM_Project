@@ -1,0 +1,70 @@
+package communications.client;
+
+import java.util.Scanner;
+
+import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
+
+import org.apache.log4j.Logger;
+
+import communications.Session;
+
+/**
+ * This class interfaces with the ATM side of the system. It attempts to communicate via TCP to the banking subsystem.
+ * 
+ * @author Adrian Rhodd
+ */
+public class ATMClient{
+ 
+	private Session transaction;
+	private TransactionMessageBean msg;
+	static Logger logger = Logger.getLogger("org.apache.log4j.PatternLayout");
+	
+	public ATMClient(){
+		
+		transaction = new Session();
+		logger.info("AtmClient new session created Class:ATMClient, line #23");
+	}
+	
+	/**
+	 * Not 100% sure if this is the way to go. But this method
+	 * should be used to send data to banking subsystem
+	 * @param msg - TransactionMessageBean
+	 */
+	public String send(String msg){
+		return transaction.write(msg);
+		//logger.info("sending/writing transaction object Class:ATMClient, line #33");
+	}
+	
+	/**
+	 * Not 100% sure if this is the way to go. This method should read responses from server.
+	 * @return
+	 */
+	public String read(){
+		logger.info("reading transaction object Class:ATMClient, line #42");
+		return transaction.read();
+	}
+	
+	public void close(){
+		transaction.close();
+		logger.info("closing transaction object Class:ATMClient, line #47");
+	}
+	
+	public static void main(String[] args){
+		
+		Scanner keyboard = new Scanner(System.in);
+		ATMClient atm = new ATMClient();
+		String input;
+		
+		logger.info("begging atm client connection Class:AtmClient, line #50");
+		do{
+			input = atm.read();
+			System.out.println("Bank>> " + input);
+			System.out.println("Enter message:");
+			input = keyboard.nextLine();
+			atm.send(input);
+		}
+		while(input != null);	
+
+	}
+	
+}

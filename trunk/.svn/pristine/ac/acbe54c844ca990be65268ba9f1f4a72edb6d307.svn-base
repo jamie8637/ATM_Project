@@ -1,0 +1,8 @@
+
+# tcp server socket port
+tcp.port: 4242
+
+# database connection settings
+db.url: jdbc:mysql://mysql.brokerlogic.com:3306/atmdb
+db.user: sd2
+db.password: fpcEbQ*XunF#h6BW$$b4

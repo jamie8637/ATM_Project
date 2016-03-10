@@ -1,0 +1,17 @@
+package atm.business.api.services;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.List;
+
+import atm.business.api.model.BankUser;
+
+public interface AccountService {
+
+	BigDecimal getUserBalance(BankUser user) throws BankServiceException;
+	List getAccountsubs(long cardNumber) throws BankServiceException;
+	BigDecimal getAccountsubBalance(int accountsubId) throws BankServiceException;
+	void makeDeposit(BankUser user, BigDecimal amount) throws BankServiceException;
+	void makeWithdrawl(BankUser user, BigDecimal amount) throws BankServiceException;
+	
+}

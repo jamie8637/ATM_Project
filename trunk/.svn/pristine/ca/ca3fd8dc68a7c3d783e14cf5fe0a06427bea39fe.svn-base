@@ -1,0 +1,51 @@
+package atm;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+
+public class BalancePanel extends JPanel {
+	
+	private MenuPanel menuPanel;
+	private JButton jbtCheckings, jbtSavings, jbtBack;
+	
+	
+	public BalancePanel() {
+		
+		// Add Buttons to Balance Panel
+		add(jbtCheckings = new JButton("Checkings"));
+		add(jbtSavings = new JButton("Savings"));
+		add(jbtBack = new JButton("Back"));
+		
+		// Set the Layout of the Balance Panel
+		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+		setLayout(boxLayout);
+		
+		jbtCheckings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Insert further options
+			}
+		});
+		
+		jbtSavings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Insert further options
+			}
+		});
+		
+		jbtBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeAll();
+				menuPanel = new MenuPanel();
+				add(menuPanel);
+				validate();
+				repaint();
+				setVisible(true);
+			}
+		});
+	}
+}

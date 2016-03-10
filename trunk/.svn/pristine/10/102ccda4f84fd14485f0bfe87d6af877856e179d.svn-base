@@ -1,0 +1,2 @@
+INSERT INTO `transaction` (`TransactionId`, `AccountSubId`, `TransactionDate`, `Amount`, `TransactionType`, `FundType`, `StartingBalance`, `EndingBalance`) VALUES 
+  (1,1,'20131110','100.00',0, 0, 0.00, 100.00);
